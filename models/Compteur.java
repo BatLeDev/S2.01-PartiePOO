@@ -7,17 +7,18 @@ import java.util.HashMap;
  * This class is used to represent a compteur, with its id, its libelle, its sens, its latitude and its longitude
  * 
  * This class save all the compteur in a HashMap, with the id as key
+ * If a compteur belong to a quartier, the compteur is added to the list of compteur of the quartier
  */
 public class Compteur {
 
     // ----------------------------- static attributes -----------------------------
 
     /**
-     * HashMap containing all the compteur
-     * The key is the id of the compteur
-     * The value is the compteur object
+     * HashMap containing all compteurs objects
+     * In key it's the id of the compteur
+     * In value it's the compteur object
      */
-    private static HashMap<Integer,Compteur>compteurList = new HashMap<Integer,Compteur>();
+    private static HashMap<Integer,Compteur> compteurList = new HashMap<Integer,Compteur>();
 
     // ----------------------------- static methods -----------------------------
 
@@ -49,47 +50,35 @@ public class Compteur {
     private Quartier quartier;
 
     /**
-     * Constructor of the class Compteur
+     * Constructor of the class Compteur with the quartier object
      * libelle + sens = "libelle vers sens"
      * can launch an IllegalArgumentException in setters if the parameters are not valid
      * 
      * @param id        an integer representing the (unique) id of the compteur (positive)
      * @param libelle   a String representing the libelle of the compteur (not null or empty)
      * @param sens      a String representing the sens of the compteur (not null or empty)
-     * @param latitude  a double representing the latitude of the compteur (positive)
-     * @param longitude a double representing the longitude of the compteur (positive)
+     * @param latitude  a double representing the latitude of the compteur
+     * @param longitude a double representing the longitude of the compteur
      * @param quartier  a Quartier object representing the quartier of the compteur
      */
     public Compteur(int id, String libelle, String sens, double latitude, double longitude, Quartier quartier) {
         if (id < 0 || !compteurList.containsKey(id)) {
-            throw new IllegalArgumentException("models.Compteur.constructor : l'id est invalide ( < 0 ou deja existant)");
+            throw new IllegalArgumentException("models.Compteur.constructor : l'id est invalide ( < 0 ou deja existant )");
         }
 
         this.idCompteur = id;
-        this.setLibelle(libelle);
-        this.setSens(sens);
-        this.setLatitude(latitude);
-        this.setLongitude(longitude);
-        this.setQuartier(quartier);
+        try {
+            this.setLibelle(libelle);
+            this.setSens(sens);
+            this.setLatitude(latitude);
+            this.setLongitude(longitude);
+            this.setQuartier(quartier);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("models.Compteur.constructor : " + e.getMessage());
+        }
 
         // add the compteur to the compteurList
         Compteur.compteurList.put(id, this);
-    }
-
-    /**
-     * Constructor of the class Compteur
-     * libelle + sens = "libelle vers sens"
-     * can launch an IllegalArgumentException in setters if the parameters are not valid
-     * 
-     * @param id        an integer representing the id of the compteur (positive)
-     * @param libelle   a String representing the libelle of the compteur (not null or empty)
-     * @param sens      a String representing the sens of the compteur (not null or empty)
-     * @param latitude  a double representing the latitude of the compteur (positive)
-     * @param longitude a double representing the longitude of the compteur (positive)
-     * @param idQuartier an integer representing the id of the quartier of the compteur (positive)
-     */
-    public Compteur(int id, String libelle, String sens, double latitude, double longitude, int idQuartier) {
-        this(id, libelle, sens, latitude, longitude, Quartier.getQuartierById(idQuartier));
     }
 
     /**
@@ -100,8 +89,8 @@ public class Compteur {
      * @param id        an integer representing the id of the compteur (positive)
      * @param libelle   a String representing the libelle of the compteur (not null or empty)
      * @param sens      a String representing the sens of the compteur (not null or empty)
-     * @param latitude  a double representing the latitude of the compteur (positive)
-     * @param longitude a double representing the longitude of the compteur (positive)
+     * @param latitude  a double representing the latitude of the compteur
+     * @param longitude a double representing the longitude of the compteur
      */
     public Compteur(int id, String libelle, String sens, double latitude, double longitude) {
         this(id, libelle, sens, latitude, longitude, null);
@@ -116,7 +105,7 @@ public class Compteur {
      */
     public void setLibelle(String libelle) {
         if (libelle == null || libelle.isEmpty()) {
-            throw new IllegalArgumentException("models.Compteur.setLibelle : Le libelle n'est pas valide");
+            throw new IllegalArgumentException("models.Compteur.setLibelle : Le libelle ne peut pas être null ou vide");
         }
         this.libelle = libelle;
     }
@@ -128,7 +117,7 @@ public class Compteur {
      */
     public void setSens(String sens) {
         if (sens == null || sens.isEmpty()) {
-            throw new IllegalArgumentException("models.Compteur.setSens : Le sens n'est pas valide");
+            throw new IllegalArgumentException("models.Compteur.setSens : Le sens ne peut pas être null ou vide");
         }
         this.sens = sens;
     }
@@ -136,24 +125,18 @@ public class Compteur {
     /**
      * Setter for the latitude of the compteur
      * 
-     * @param latitude a double representing the latitude of the compteur (positive)
+     * @param latitude a double representing the latitude of the compteur
      */
     public void setLatitude(double latitude) {
-        if (latitude < 0) {
-            throw new IllegalArgumentException("models.Compteur.setLatitude : La latitude doit être positive");
-        }
         this.latitude = latitude;
     }
     
     /**
      * Setter for the longitude of the compteur
      * 
-     * @param longitude a double representing the longitude of the compteur (positive)
+     * @param longitude a double representing the longitude of the compteur
      */
     public void setLongitude(double longitude) {
-        if (longitude < 0) {
-            throw new IllegalArgumentException("models.Compteur.setLongitude : La longitude doit être positive");
-        }
         this.longitude = longitude;
     }
 
@@ -163,7 +146,13 @@ public class Compteur {
      * @param quartier a Quartier object representing the quartier of the compteur
      */
     public void setQuartier(Quartier quartier) {
-        this.quartier = quartier;
+        // remove the compteur from the old quartier
+        if (quartier != null) {
+            this.quartier.removeCompteur(this.idCompteur);
+        }
+
+        this.quartier = quartier; // set the new quartier
+        this.quartier.addCompteur(this.idCompteur); // add the compteur to the new quartier
     }
 
     /**
@@ -172,7 +161,18 @@ public class Compteur {
      * @param idQuartier an integer representing the id of the quartier of the compteur (positive)
      */
     public void setQuartier(int idQuartier) {
-        this.setQuartier(Quartier.getQuartierById(idQuartier));
+        if (idQuartier < 0) {
+            throw new IllegalArgumentException(
+                    "models.Compteur.setQuartier : L'id du quartier ne peut pas être négatif");
+        }
+        
+        // remove the compteur from the old quartier
+        if (this.quartier != null) {
+            this.quartier.removeCompteur(this.idCompteur);
+        }
+
+        this.quartier = Quartier.getQuartierById(idQuartier); // set the new quartier
+        this.quartier.addCompteur(this.idCompteur); // add the compteur to the new quartier
     }
 
     // ----------------------------- getters -----------------------------
