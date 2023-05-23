@@ -13,6 +13,18 @@ public class Jour {
     
     private static HashMap<String,Jour> jourList = new HashMap<String,Jour>();
 
+    public static Jour getJour (String date) {
+        return Jour.jourList.get(date);
+    }
+
+    public static void deleteJour (String date) {
+        Jour.jourList.remove(date);
+    }
+
+    public static void clearJourList () {
+        Jour.jourList.clear();
+    }
+
     private String date;
     private double temperatureMoyenne;
     private JourSemaine jour;
@@ -75,7 +87,12 @@ public class Jour {
         if (!this.dateValide(date)){
             throw new IllegalArgumentException("models.Jour.setDate : Le parametre date n'est pas valide");
         }
+        if (Jour.jourList.containsKey(date)){
+            throw new IllegalArgumentException("models.Jour.setDate : Le parametre date est deja utilise");
+        }
+        Jour.jourList.remove(this.date);
         this.date = date;
+        Jour.jourList.put(date, this);
     }
 
     public void setTemperatureMoyenne (double temperatureMoyenne) {
@@ -92,6 +109,23 @@ public class Jour {
     public void setVacances (Vacances vacances) {
         this.vacances = vacances;
     }
+
+    public boolean estWeekEnd(){
+        boolean ret = false;
+        if (this.jour == JourSemaine.SAMEDI || this.jour == JourSemaine.DIMANCHE){
+            ret = true;
+        }
+        return ret;
+    }
+
+    public boolean estVacances(){
+        boolean ret = false;
+        if (this.vacances != null){
+            ret = true;
+        }
+        return ret;
+    }
+
 
 
 }
