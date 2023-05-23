@@ -37,24 +37,24 @@ public class Compteur {
         this.longitude = longitude;
         
         Compteur.compteurList.put(id, this);
-        
     }
 
     // setters
 
     // getters
-    public static Quartier getQuartierById(int id) {
-        return compteurList.get(id);
+    public static Compteur getQuartierById(int id) {
+        return Compteur.compteurList.get(id);
     }
 
     // dropper
-    public static Quartier delQuartierById(int id) {
-        return compteurList.remove(id);
+    public static Compteur delQuartierById(int id) {
+        return Compteur.compteurList.remove(id);
     }
 
     // prints
     public String toString() {
-        String ret = this.libelle + "vers" + this.sens + "#" + this.idCompteur + " : ;
+        String ret = this.libelle + "vers" + this.sens + "#" + this.idCompteur +
+        " : latitude = " + this.latitude + " longitude = " + this.longitude;
         return ret;
     }
 
