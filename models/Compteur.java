@@ -58,11 +58,11 @@ public class Compteur {
      * @param sens      a String representing the sens of the compteur (not null or empty)
      * @param latitude  a double representing the latitude of the compteur (positive)
      * @param longitude a double representing the longitude of the compteur (positive)
-     * @param quartier  a Quartier object representing the quartier of the compteur (not null)
+     * @param quartier  a Quartier object representing the quartier of the compteur
      */
     public Compteur(int id, String libelle, String sens, double latitude, double longitude, Quartier quartier) {
         if (id < 0 || !compteurList.containsKey(id)) {
-            throw new IllegalArgumentException("models.Compteur.constructor : l'id est invalide (<0 ou deja existant)");
+            throw new IllegalArgumentException("models.Compteur.constructor : l'id est invalide ( < 0 ou deja existant)");
         }
 
         this.idCompteur = id;
@@ -91,9 +91,23 @@ public class Compteur {
     public Compteur(int id, String libelle, String sens, double latitude, double longitude, int idQuartier) {
         this(id, libelle, sens, latitude, longitude, Quartier.getQuartierById(idQuartier));
     }
-    
-    // ----------------------------- setters ----a String representing the
-    // compteur-------------------------
+
+    /**
+     * Constructor of the class Compteur without quartier
+     * libelle + sens = "libelle vers sens"
+     * can launch an IllegalArgumentException in setters if the parameters are not valid
+     * 
+     * @param id        an integer representing the id of the compteur (positive)
+     * @param libelle   a String representing the libelle of the compteur (not null or empty)
+     * @param sens      a String representing the sens of the compteur (not null or empty)
+     * @param latitude  a double representing the latitude of the compteur (positive)
+     * @param longitude a double representing the longitude of the compteur (positive)
+     */
+    public Compteur(int id, String libelle, String sens, double latitude, double longitude) {
+        this(id, libelle, sens, latitude, longitude, null);
+    }
+
+    // ----------------------------- setters -----------------------------
 
     /**
      * Setter for the libelle of the compteur
@@ -146,12 +160,9 @@ public class Compteur {
     /**
      * Setter for the quartier of the compteur
      * 
-     * @param quartier a Quartier object representing the quartier of the compteur (not null)
+     * @param quartier a Quartier object representing the quartier of the compteur
      */
     public void setQuartier(Quartier quartier) {
-        if (quartier == null) {
-            throw new IllegalArgumentException("models.Compteur.setQuartier : Le quartier n'est pas valide");
-        }
         this.quartier = quartier;
     }
 
