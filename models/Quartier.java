@@ -62,7 +62,7 @@ public class Quartier {
         }
 
         this.idQuartier = id;
-        this.setNom(nom);
+        this.setNomQuartier(nom);
         this.setLgPisteCyclable(lgPisteCyclable);
 
         // add the quartier to the quartierList
@@ -76,7 +76,7 @@ public class Quartier {
      * 
      * @param nomQuartier a String representing the name of the quartier (not null or empty)
      */
-    public void setNom(String nomQuartier) {
+    public void setNomQuartier(String nomQuartier) {
         if (nomQuartier == null || nomQuartier.isEmpty()) {
             throw new IllegalArgumentException("models.Quartier.setNom : Le parametre nom n'est pas valide");
         }
