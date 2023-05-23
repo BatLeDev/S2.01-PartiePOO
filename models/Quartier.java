@@ -1,6 +1,7 @@
 package models;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Class Quartier
@@ -45,6 +46,7 @@ public class Quartier {
     private int idQuartier;
     private String nomQuartier;
     private double lgPisteCyclable;
+    private ArrayList<Integer> idCompteurs;
 
     // ----------------------------- constructor -----------------------------
 
@@ -65,6 +67,8 @@ public class Quartier {
         this.setNom(nom);
         this.setLgPisteCyclable(lgPisteCyclable);
 
+        this.idCompteurs = new ArrayList<Integer>()
+            
         // add the quartier to the quartierList
         Quartier.quartierList.put(id, this);
     }
@@ -124,6 +128,16 @@ public class Quartier {
     public double getLgPisteCyclable() {
         return this.lgPisteCyclable;
     }
+    
+    public ArrayList<Integer> getCompteursList() {
+        return this.idCompteurs.clone();
+    }
+    
+    // others
+    protected void addCompteur(int idCompteur){}
+    protected void removeCompteur(int idCompteur){}
+
+
 
     // ----------------------------- prints -----------------------------
 
