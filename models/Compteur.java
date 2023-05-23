@@ -10,14 +10,37 @@ import java.util.HashMap;
  */
 public class Compteur {
 
+    // ----------------------------- static attributes -----------------------------
+
     /**
      * HashMap containing all the compteur
      * The key is the id of the compteur
      * The value is the compteur object
      */
-    private static HashMap<Integer,Compteur>compteurList=new HashMap<Integer,Compteur>();
+    private static HashMap<Integer,Compteur>compteurList = new HashMap<Integer,Compteur>();
 
-    // attributes
+    // ----------------------------- static methods -----------------------------
+
+    /**
+     * Get a compteur by his id
+     * 
+     * @return the compteur object corresponding to the id
+     */
+    public static Compteur getCompteurById(int id) {
+        return Compteur.compteurList.get(id);
+    }
+
+    /**
+     * Delete a compteur by his id
+     * 
+     * @return the compteur object corresponding to the id
+     */
+    public static Compteur delQuartierById(int id) {
+        return Compteur.compteurList.remove(id);
+    }
+
+    // ----------------------------- attributes -----------------------------
+
     private int idCompteur;
     private String libelle;
     private String sens;
@@ -69,7 +92,8 @@ public class Compteur {
         this(id, libelle, sens, latitude, longitude, Quartier.getQuartierById(idQuartier));
     }
     
-    // ----------------------------- setters -----------------------------
+    // ----------------------------- setters ----a String representing the
+    // compteur-------------------------
 
     /**
      * Setter for the libelle of the compteur
@@ -143,15 +167,6 @@ public class Compteur {
     // ----------------------------- getters -----------------------------
 
     /**
-     * Get a compteur by his id
-     * 
-     * @return the compteur object corresponding to the id
-     */
-    public static Compteur getCompteurById(int id) {
-        return Compteur.compteurList.get(id);
-    }
-
-    /**
      * Get the id of the compteur
      * 
      * @return the id of the compteur
@@ -214,17 +229,6 @@ public class Compteur {
     public double[] getPosition() {
         double[] ret = {this.latitude, this.longitude};
         return ret;
-    }
-
-    // ----------------------------- dropper -----------------------------
-
-    /**
-     * Delete a compteur by his id
-     * 
-     * @return the compteur object corresponding to the id
-     */
-    public static Compteur delQuartierById(int id) {
-        return Compteur.compteurList.remove(id);
     }
 
     // ----------------------------- views -----------------------------
