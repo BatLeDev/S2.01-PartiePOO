@@ -242,7 +242,7 @@ public class Compteur {
         return ret;
     }
 
-    // ----------------------------- views -----------------------------
+    // ----------------------------- prints -----------------------------
 
     /**
      * Get a String representing the compteur
