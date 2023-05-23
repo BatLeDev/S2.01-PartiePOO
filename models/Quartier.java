@@ -1,21 +1,23 @@
 package models;
 
+import java.util.HashMap;
+
 public class Quartier {
-    private static HashMap<int,Quartier>quartierList=new HashMap<int,Quartier>();
+    private static HashMap<Integer,Quartier>quartierList=new HashMap<Integer,Quartier>();
 
     private int idQuartier;
     private String nomQuartier;
     private double lgPisteCyclable;
 
-    public Quartier(id, nom, lgPisteCyclable) {
+    public Quartier(int id, String nom, double lgPisteCyclable) {
         if (id < 0 || !quartierList.containsKey(id)) {
-            throw new illegalArgumentException("models.Quartier.constructor : l'id est invalide (<0 ou deja existant)");
+            throw new IllegalArgumentException("models.Quartier.constructor : l'id est invalide (<0 ou deja existant)");
         }
         if (nom == null || nom.isEmpty()) {
-            throw new illegalArgumentException("models.Quartier.constructor : Le parametre nom n'est pas valide");
+            throw new IllegalArgumentException("models.Quartier.constructor : Le parametre nom n'est pas valide");
         }
         if (lgPisteCyclable<0){
-            throw new illegalArgumentException("models.Quartier.constructor : La longueur de la piste doit être positive");
+            throw new IllegalArgumentException("models.Quartier.constructor : La longueur de la piste doit être positive");
         }
         this.idQuartier = id;
         this.nomQuartier = nom;
@@ -38,8 +40,7 @@ public class Quartier {
 
     // prints
     public String toString() {
-        String ret = this.nomQuartier + "#" + id + " : longueurPiste = " + lgPisteCyclable;
+        String ret = this.nomQuartier + "#" + this.idQuartier + " : longueurPiste = " + lgPisteCyclable;
         return ret;
     }
-
 }
