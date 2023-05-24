@@ -17,6 +17,7 @@ public class Compteur {
      * HashMap containing all compteurs objects
      * In key it's the id of the compteur
      * In value it's the compteur object
+     * This HashMap allow to get a compteur by his id and verify uniqueness of id
      */
     private static HashMap<Integer,Compteur> compteurList = new HashMap<Integer,Compteur>();
 
@@ -62,7 +63,7 @@ public class Compteur {
      * @param quartier  a Quartier object representing the quartier of the compteur
      */
     public Compteur(int id, String libelle, String sens, double latitude, double longitude, Quartier quartier) {
-        if (id < 0 || !compteurList.containsKey(id)) {
+        if (id < 0 || compteurList.containsKey(id)) {
             throw new IllegalArgumentException("models.Compteur.constructor : l'id est invalide ( < 0 ou deja existant )");
         }
 
@@ -147,12 +148,13 @@ public class Compteur {
      */
     public void setQuartier(Quartier quartier) {
         // remove the compteur from the old quartier
-        if (quartier != null) {
+        if (this.quartier != null) {
             this.quartier.removeCompteur(this.idCompteur);
         }
-
-        this.quartier = quartier; // set the new quartier
-        this.quartier.addCompteur(this.idCompteur); // add the compteur to the new quartier
+        this.quartier = quartier; // set the new quartier (or null)
+        if (quartier != null) {
+            this.quartier.addCompteur(this.idCompteur); // add the compteur to the new quartier
+        }
     }
 
     /**
@@ -250,8 +252,12 @@ public class Compteur {
      * @return "libelle vers sens#idCompteur : quartier = idQuartier, latitude = latitude, longitude = getLongitude"
      */
     public String toString() {
-        String ret = this.libelle + "vers" + this.sens + "#" + this.idCompteur +
-                " : quartier = " + this.quartier.getId() + ", latitude = " + this.latitude + ", longitude = " + this.longitude;
+        if (this.quartier == null) {
+            return this.libelle + " vers " + this.sens + "#" + this.idCompteur +
+                " : quartier = null, latitude = " + this.latitude + ", longitude = " + this.longitude;
+        }
+        String ret = this.libelle + " vers " + this.sens + "#" + this.idCompteur +
+                " : quartier = " + this.quartier.getId() + "#, latitude = " + this.latitude + ", longitude = " + this.longitude;
         return ret;
     }
     

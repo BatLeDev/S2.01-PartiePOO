@@ -9,18 +9,19 @@ import java.util.ArrayList;
  * length of track
  * 
  * This class save all the quartier in a HashMap, with the id as key
+ * Each quartier has a list of compteur
  */
 public class Quartier {
     
     // ----------------------------- static attributes -----------------------------
 
     /**
-     * HashMap containing all the quartier
+     * HashMap containing all quartier's objects
      * The key is the id of the quartier
      * The value is the quartier object
      * This HashMap allow to get a quartier by his id and verify uniqueness of id
      */
-    private static HashMap<Integer,Quartier>quartierList = new HashMap<Integer,Quartier>();
+    private static HashMap<Integer,Quartier> quartierList = new HashMap<Integer,Quartier>();
 
     // ----------------------------- static methods -----------------------------
 
@@ -59,18 +60,16 @@ public class Quartier {
      * @param lgPisteCyclable   a double representing the length of the track of the quartier (positive)
      */
     public Quartier(int id, String nom, double lgPisteCyclable) {
-        if (id < 0 || !quartierList.containsKey(id)) {
+        if (id < 0 || quartierList.containsKey(id)) {
             throw new IllegalArgumentException("models.Quartier.constructor : l'id est invalide (<0 ou deja existant)");
         }
 
         this.idQuartier = id;
         this.setNom(nom);
         this.setLgPisteCyclable(lgPisteCyclable);
-
-        this.idCompteurs = new ArrayList<Integer>()
+        this.idCompteurs = new ArrayList<Integer>();
             
-        // add the quartier to the quartierList
-        Quartier.quartierList.put(id, this);
+        Quartier.quartierList.put(id, this); // add the quartier to the quartierList
     }
     
     // ----------------------------- setters -----------------------------
@@ -129,15 +128,44 @@ public class Quartier {
         return this.lgPisteCyclable;
     }
     
+    /**
+     * Get the list of compteur of the quartier
+     * 
+     * @return an ArrayList of Integer representing the list of compteur of the quartier
+     */
     public ArrayList<Integer> getCompteursList() {
-        return this.idCompteurs.clone();
+        return new ArrayList<Integer>(this.idCompteurs);
     }
     
-    // others
-    protected void addCompteur(int idCompteur){}
-    protected void removeCompteur(int idCompteur){}
+    // ----------------------------- add/remove -----------------------------
 
+    /**
+     * Add a compteur to the quartier
+     * /!\ the quartierId of the compteur is not changed
+     * 
+     * @param idCompteur an int representing the id of the compteur to add (positive)
+     */
+    protected void addCompteur(int idCompteur) {
+        if (idCompteur < 0) {
+            throw new IllegalArgumentException("models.Quartier.addCompteur : L'id du compteur doit être positif");
+        }
+        if (!this.idCompteurs.contains(idCompteur)) { // if the compteur is not already in the list
+            this.idCompteurs.add(idCompteur);
+        }
+    }
 
+    /**
+     * Remove a compteur from the quartier
+     * /!\ the quartierId of the compteur is not changed
+     * 
+     * @param idCompteur an int representing the id of the compteur to remove (positive)
+     */
+    protected void removeCompteur(int idCompteur) {
+        if (idCompteur < 0) {
+            throw new IllegalArgumentException("models.Quartier.removeCompteur : L'id du compteur doit être positif");
+        }
+        this.idCompteurs.remove(idCompteur);
+    }
 
     // ----------------------------- prints -----------------------------
 
