@@ -168,13 +168,12 @@ public class Compteur {
                     "models.Compteur.setQuartier : L'id du quartier ne peut pas être négatif");
         }
         
-        // remove the compteur from the old quartier
-        if (this.quartier != null) {
-            this.quartier.removeCompteur(this.idCompteur);
+        Quartier q = Quartier.getQuartierById(idQuartier); // set the new quartier
+        if (q == null) {
+            throw new IllegalArgumentException(
+                    "models.Compteur.setQuartier : L'id du quartier ne correspond à aucun quartier");
         }
-
-        this.quartier = Quartier.getQuartierById(idQuartier); // set the new quartier
-        this.quartier.addCompteur(this.idCompteur); // add the compteur to the new quartier
+        this.setQuartier(q);
     }
 
     // ----------------------------- getters -----------------------------
@@ -252,12 +251,13 @@ public class Compteur {
      * @return "libelle vers sens#idCompteur : quartier = idQuartier, latitude = latitude, longitude = getLongitude"
      */
     public String toString() {
+        String ret = this.libelle + " vers " + this.sens + "#" + this.idCompteur + " : quartier = ";
         if (this.quartier == null) {
-            return this.libelle + " vers " + this.sens + "#" + this.idCompteur +
-                " : quartier = null, latitude = " + this.latitude + ", longitude = " + this.longitude;
+            ret += "null";
+        } else {
+            ret += this.quartier.getId() + "#";
         }
-        String ret = this.libelle + " vers " + this.sens + "#" + this.idCompteur +
-                " : quartier = " + this.quartier.getId() + "#, latitude = " + this.latitude + ", longitude = " + this.longitude;
+        ret+= ", latitude = " + this.latitude + ", longitude = " + this.longitude;
         return ret;
     }
     
@@ -267,7 +267,12 @@ public class Compteur {
      * @return "idCompteur;libelle;sens;latitude;longitude;idQuartier"
      */
     public String toCSV() {
-        String ret = this.idCompteur + ";" + this.libelle + ";" + this.sens + ";" + this.latitude + ";" + this.longitude + ";" + this.quartier.getId();
+        String ret = this.idCompteur + ";" + this.libelle + ";" + this.sens + ";" + this.latitude + ";" + this.longitude + ";";
+        if (this.quartier == null) {
+            ret += "null";
+        } else {
+            ret += this.quartier.getId();
+        }
         return ret;
     }
 }

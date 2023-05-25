@@ -28,6 +28,7 @@ public class Quartier {
     /**
      * Get a quartier by his id
      * 
+     * @param id the id of the quartier to get
      * @return the quartier object corresponding to the id, null if not found
      */
     public static Quartier getQuartierById(int id) {
@@ -37,6 +38,7 @@ public class Quartier {
     /**
      * Delete a quartier by his id
      * 
+     * @param id the id of the quartier to delete
      * @return the quartier object corresponding to the id, null if not found
      */
     public static Quartier delQuartierById(int id) {
@@ -164,7 +166,10 @@ public class Quartier {
         if (idCompteur < 0) {
             throw new IllegalArgumentException("models.Quartier.removeCompteur : L'id du compteur doit être positif");
         }
-        this.idCompteurs.remove(idCompteur);
+        int indice = this.idCompteurs.indexOf(idCompteur);
+        if (indice != -1) { // if the compteur is in the list
+            this.idCompteurs.remove(indice);
+        }
     }
 
     // ----------------------------- prints -----------------------------
