@@ -2,28 +2,52 @@ package models;
 
 import java.util.HashMap;
 
+
+/**
+ * les jours de la semaine
+ */
 enum JourSemaine {
     LUNDI, MARDI, MERCREDI, JEUDI, VENDREDI, SAMEDI, DIMANCHE;
 }
+
+/**
+ * les vacances scolaires
+ */
 enum Vacances {
     Noel, Ascension, Hiver, Ete, Toussaint, Printemps;
 }
 
+/**
+ * Classe Jour permet de stocker sa date, sa temperature moyenne, son jour de la semaine et ses vacances scolaires
+ */
 public class Jour {
+
+    // Static
     
+    /**
+     * liste des jours crees
+     */
     private static HashMap<String,Jour> jourList = new HashMap<String,Jour>();
 
+    /**
+     * retourne le jour correspondant a la date passee en parametre
+     * @param date la date du jour 
+     * @return le jour correspondant a la date passee en parametre
+     */
     public static Jour getJour (String date) {
         return Jour.jourList.get(date);
     }
 
+    /**
+     * Supprime le jour correspondant a la date passee en parametre
+     * @param date la date du jour a supprimer
+     */
     public static void deleteJour (String date) {
         Jour.jourList.remove(date);
     }
 
-    public static void clearJourList () {
-        Jour.jourList.clear();
-    }
+
+    // non static
 
     private String date;
     private double temperatureMoyenne;
@@ -53,11 +77,11 @@ public class Jour {
         boolean ret = false;
 
         if (date != null && !date.isEmpty()) {
-            String[] dateSplit = date.split("/");
+            String[] dateSplit = date.split("-");
             if (dateSplit.length == 3) {
-                int jour = Integer.parseInt(dateSplit[0]);
+                int annee = Integer.parseInt(dateSplit[0]);
                 int mois = Integer.parseInt(dateSplit[1]);
-                int annee = Integer.parseInt(dateSplit[2]);
+                int jour = Integer.parseInt(dateSplit[2]);
 
                 if ((jour > 0) && (jour < 32) && (mois > 0) && (mois < 13) && (annee > 0)) {
                     ret = true;
@@ -81,18 +105,6 @@ public class Jour {
 
     public Vacances getVacances () {
         return this.vacances;
-    }
-
-    public void setDate (String date) {
-        if (!this.dateValide(date)){
-            throw new IllegalArgumentException("models.Jour.setDate : Le parametre date n'est pas valide");
-        }
-        if (Jour.jourList.containsKey(date)){
-            throw new IllegalArgumentException("models.Jour.setDate : Le parametre date est deja utilise");
-        }
-        Jour.jourList.remove(this.date);
-        this.date = date;
-        Jour.jourList.put(date, this);
     }
 
     public void setTemperatureMoyenne (double temperatureMoyenne) {

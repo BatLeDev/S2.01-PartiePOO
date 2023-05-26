@@ -38,7 +38,7 @@ public class ReleveJournalier {
         if (relevesHeures != null) {
             if (relevesHeures.length == 24) {
                 int i = 0;
-                while (i < relevesHeures.length && relevesHeures[i] >= 0) {
+                while ((i < relevesHeures.length) && (relevesHeures[i] >= 0)) {
                     i++;
                 }
                 if (i == 24){
@@ -58,7 +58,11 @@ public class ReleveJournalier {
     }
 
     public int[] getRelevesHeures() {
-        return relevesHeures;
+        int[] tab = new int[24];
+        for (int i = 0; i < 24; i++){
+            tab[i] = relevesHeures[i];
+        }
+        return tab;
     }
 
     public TypeAnomalie getPresenceAnomalie() {
