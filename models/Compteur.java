@@ -38,7 +38,11 @@ public class Compteur {
      * @return the compteur object corresponding to the id
      */
     public static Compteur delCompteurById(int id) {
-        return Compteur.compteurList.remove(id);
+        Compteur c = Compteur.compteurList.remove(id);
+        if (c != null && c.getQuartier() != null) {
+            c.getQuartier().removeCompteur(id);
+        }
+        return c;
     }
 
     // ----------------------------- attributes -----------------------------

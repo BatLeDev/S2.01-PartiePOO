@@ -42,14 +42,14 @@ public class Quartier {
      * @return the quartier object corresponding to the id, null if not found
      */
     public static Quartier delQuartierById(int id) {
-        return quartierList.remove(id);
+        return Quartier.quartierList.remove(id);
     }
 
     // ----------------------------- attributes -----------------------------
     private int idQuartier;
     private String nomQuartier;
     private double lgPisteCyclable;
-    private ArrayList<Integer> idCompteurs;
+    private ArrayList<Integer> compteurIdList;
 
     // ----------------------------- constructor -----------------------------
 
@@ -67,9 +67,13 @@ public class Quartier {
         }
 
         this.idQuartier = id;
-        this.setNom(nom);
-        this.setLgPisteCyclable(lgPisteCyclable);
-        this.idCompteurs = new ArrayList<Integer>();
+        try {
+            this.setNom(nom);
+            this.setLgPisteCyclable(lgPisteCyclable);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("models.Quartier.constructor : " + e.getMessage());
+        }
+        this.compteurIdList = new ArrayList<Integer>();
             
         Quartier.quartierList.put(id, this); // add the quartier to the quartierList
     }
@@ -136,7 +140,7 @@ public class Quartier {
      * @return an ArrayList of Integer representing the list of compteur of the quartier
      */
     public ArrayList<Integer> getCompteursList() {
-        return new ArrayList<Integer>(this.idCompteurs);
+        return new ArrayList<Integer>(this.compteurIdList);
     }
     
     // ----------------------------- add/remove -----------------------------
@@ -151,8 +155,8 @@ public class Quartier {
         if (idCompteur < 0) {
             throw new IllegalArgumentException("models.Quartier.addCompteur : L'id du compteur doit être positif");
         }
-        if (!this.idCompteurs.contains(idCompteur)) { // if the compteur is not already in the list
-            this.idCompteurs.add(idCompteur);
+        if (!this.compteurIdList.contains(idCompteur)) { // if the compteur is not already in the list
+            this.compteurIdList.add(idCompteur);
         }
     }
 
@@ -166,9 +170,9 @@ public class Quartier {
         if (idCompteur < 0) {
             throw new IllegalArgumentException("models.Quartier.removeCompteur : L'id du compteur doit être positif");
         }
-        int indice = this.idCompteurs.indexOf(idCompteur);
+        int indice = this.compteurIdList.indexOf(idCompteur);
         if (indice != -1) { // if the compteur is in the list
-            this.idCompteurs.remove(indice);
+            this.compteurIdList.remove(indice);
         }
     }
 
@@ -180,7 +184,8 @@ public class Quartier {
      * @return "nomQuartier#idQuartier : longueurPiste = lgPisteCyclable"
      */
     public String toString() {
-        String ret = this.nomQuartier + "#" + this.idQuartier + " : longueurPiste = " + lgPisteCyclable;
+        String ret = this.nomQuartier + "#" + this.idQuartier + " : nbCompteurs = " + this.compteurIdList.size()
+                + ", longueurPiste = " + this.lgPisteCyclable;
         return ret;
     }
 
@@ -190,7 +195,7 @@ public class Quartier {
      * @return "nomQuartier;idQuartier;lgPisteCyclable"
      */
     public String toCSV() {
-        String ret = this.nomQuartier + ";" + this.idQuartier + ";" + lgPisteCyclable;
+        String ret = this.idQuartier + ";" + this.nomQuartier + ";" + this.lgPisteCyclable;
         return ret;
     }
 }
