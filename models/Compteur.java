@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Class compteur
  * This class is used to represent a compteur, with its id, its libelle, its sens, its latitude and its longitude
  * 
- * This class save all the compteur in a HashMap, with the id as key
+ * This class save all the compteur in a HashMap, with the id as key and the compteur object as value
  * If a compteur belong to a quartier, the compteur is added to the list of compteur of the quartier
  */
 public class Compteur {

@@ -2,39 +2,51 @@ package models;
 
 import java.util.HashMap;
 
-/**
- * Classe Jour permet de stocker sa date, sa temperature moyenne, son jour de la semaine et ses vacances scolaires
+/*
+ * Class Jour
+ * This class is used to represent a day, with its date, its day, its holidays and its average temperature
+ * 
+ * This class save all the days in a HashMap, with the date as key and the Jour object as value
  */
 public class Jour {
 
     // ----------------------------- static attributes -----------------------------
     
     /**
-     * liste des jours crees
+     * HashMap containing all Jour objects
      */
     private static HashMap<String, Jour> jourList = new HashMap<String, Jour>();
+
     private static String[] valideJours = { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" };
     private static String[] valideVacances = { "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps" };
 
     // ----------------------------- static methods -----------------------------
 
     /**
-     * retourne le jour correspondant a la date passee en parametre
-     * @param date la date du jour 
-     * @return le jour correspondant a la date passee en parametre
+     * Get a jour by his date
+     * 
+     * @param date the date of the jour to get (format : YYYY-MM-DD)
+     * @return the jour object corresponding to the date
      */
     public static Jour getJour (String date) {
         return Jour.jourList.get(date);
     }
 
     /**
-     * Supprime le jour correspondant a la date passee en parametre
-     * @param date la date du jour a supprimer
+     * Delete a jour by his date
+     * 
+     * @param date the date of the jour to delete (format : YYYY-MM-DD)
      */
     public static void deleteJour (String date) {
         Jour.jourList.remove(date);
     }
 
+    /**
+     * Check if a date is valid
+     * 
+     * @param date the date to check (format : YYYY-MM-DD)
+     * @return true if the date is valid, false otherwise
+     */
     private static boolean dateValide(String date) {
         boolean ret = false;
 
@@ -53,6 +65,13 @@ public class Jour {
         return ret;
     }
 
+    /**
+     * Check if a string is in a list of string
+     * 
+     * @param aChercher the string to check 
+     * @param liste the list of string to check in 
+     * @return true if the string is in the list, false otherwise 
+     */
     private static boolean containString(String aChercher, String[] liste) {
         boolean ret = false;
         for (String s : liste) {
@@ -72,6 +91,14 @@ public class Jour {
 
     // ----------------------------- constructor -----------------------------
 
+    /**
+     * Constructor of Jour
+     * 
+     * @param date the date of the jour to create (format : YYYY-MM-DD)
+     * @param temperatureMoyenne the average temperature
+     * @param jour the day of the week
+     * @param vacances the holidays (null if there is no holidays)
+     */
     public Jour(String date, double temperatureMoyenne, String jour, String vacances) {
         if (!Jour.dateValide(date)) {
             throw new IllegalArgumentException("models.Jour.constructor : Le parametre date n'est pas valide");
@@ -94,6 +121,11 @@ public class Jour {
     
     // ----------------------------- setters -----------------------------
 
+    /**
+     * Set the day of the week with a string
+     * 
+     * @param jour the day of the week
+     */
     public void setJour(String jour) {
         if (jour == null || jour.isEmpty()) {
             throw new IllegalArgumentException(
@@ -106,6 +138,11 @@ public class Jour {
         this.jour = jour;
     }
     
+    /**
+     * Set the day of the week with an int
+     * 
+     * @param jour the day of the week
+     */
     public void setJour(int jour) {
         if (jour < 0 || jour > 6) {
             throw new IllegalArgumentException("models.Jour.setJour : Le parametre jour n'est pas valide (0-6))");
@@ -113,6 +150,11 @@ public class Jour {
         this.jour = Jour.valideJours[jour];
     }
 
+    /**
+     * Set the holidays
+     * 
+     * @param vacances the holidays, null if there is no holidays
+     */
     public void setVacances(String vacances) {
         if (vacances == null || vacances.isEmpty()) {
             this.vacances = null;
@@ -124,6 +166,13 @@ public class Jour {
         }
     }
 
+    /**
+     * Set the average temperature
+     * 
+     * The average temperature must be between -40 and 60
+     * 
+     * @param temperatureMoyenne the average temperature
+     */
     public void setTemperatureMoyenne(double temperatureMoyenne) {
         if (temperatureMoyenne < -40 || temperatureMoyenne > 60) {
             throw new IllegalArgumentException(
@@ -134,22 +183,49 @@ public class Jour {
 
     // ----------------------------- getters -----------------------------
 
+    /**
+     * Get the date of the jour
+     * 
+     * @return the date of the jour (format : YYYY-MM-DD)
+     */
     public String getDate() {
         return this.date;
     }
 
+    /**
+     * Get the day of the week
+     * 
+     * @return the day of the week
+     */
     public double getTemperatureMoyenne() {
         return this.temperatureMoyenne;
     }
 
+    /**
+     * Get the holidays
+     * 
+     * @return the holidays, null if there is no holidays
+     */
     public String getJour() {
         return this.jour;
     }
 
+    /**
+     * Get the average temperature
+     * 
+     * @return the average temperature
+     */
     public String getVacances() {
         return this.vacances;
     }
     
+    // ----------------------------- methods -----------------------------
+
+    /**
+     * Get the day of the week
+     * 
+     * @return the day of the week
+     */
     public boolean estWeekEnd(){
         boolean ret = false;
         if (this.jour.equals("Samedi") || this.jour.equals("Dimanche")){
@@ -158,6 +234,11 @@ public class Jour {
         return ret;
     }
 
+    /**
+     * Check if the day is a holiday
+     * 
+     * @return true if the day is a holiday, false otherwise
+     */
     public boolean estVacances(){
         boolean ret = false;
         if (this.vacances != null){
