@@ -1,38 +1,30 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
-enum TypeAnomalie {
-    Faible, Forte;
-}
 
 public class ReleveJournalier {
     
-    // private static HashMap<Integer,ReleveJournalier> ReleveJournalierList = new HashMap<Integer,ReleveJournalier>();
+    // -------------- Attributs Static -------------- //
 
-    private Compteur leCompteur;
-    private Jour leJour;
-    private int[] relevesHeures;
-    TypeAnomalie presenceAnomalie;
 
-    public ReleveJournalier (Compteur leCompteur , Jour leJour , int[] relevesHeures , TypeAnomalie presenceAnomalie){
-        if (leCompteur == null){
-            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre leCompteur n'est pas valide");
+    private static final String[] typeAnomalie = {"Faible","Forte"};
+
+    private static HashMap<Integer,ArrayList<ReleveJournalier>> ReleveComptList = new HashMap<Integer,ArrayList<ReleveJournalier>>();
+    private static HashMap<String,ArrayList<ReleveJournalier>> ReleveJourList = new HashMap<String,ArrayList<ReleveJournalier>>();
+
+
+    private static boolean typeAnomalieValide(String type) {
+        boolean ret = false;
+        for (String s : typeAnomalie) {
+            if (s.equals(type)) {
+                ret = true;
+            }
         }
-        if (leJour == null){
-            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre leJour n'est pas valide");
-        }
-        if (!this.relevesHeuresValide(relevesHeures)){
-            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre relevesHeures n'est pas valide");
-        }
-        
-        this.leCompteur = leCompteur;
-        this.leJour = leJour;
-        this.relevesHeures = relevesHeures;
-        this.presenceAnomalie = presenceAnomalie;
+        return ret;
     }
 
-    private boolean relevesHeuresValide(int[] relevesHeures) {
+    private static boolean relevesHeuresValide(int[] relevesHeures) {
         boolean ret = false;
 
         if (relevesHeures != null) {
@@ -49,11 +41,55 @@ public class ReleveJournalier {
         return ret;
     }
 
-    public Compteur getLeCompteur() {
+
+
+    // ---- ----------------- //
+
+    /**
+     * retourne le Releve Journalier correspondant a la date et au Compteur passe en parametre
+     * @param date la date du releve
+     * @param idCompteur l'identifiant du compteur du releve
+     * @return le Releve Journalier correspondant a la date passee en parametre
+     */
+    public static void getJour (String date, int idCompteur) {
+    }
+
+    public static void clear () {
+        ReleveComptList.clear();
+        ReleveJourList.clear();
+    }
+
+    private int leCompteur;
+    private String leJour;
+    private int[] relevesHeures;
+    String presenceAnomalie;
+
+    public ReleveJournalier (int leCompteur , String leJour , int[] relevesHeures , String presenceAnomalie){
+        if ((Compteur.getCompteur(leCompteur) == null)){
+            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre leCompteur n'est pas valide");
+        }
+        if ((leJour == null) && (Jour.getJour(leJour) == null)){
+            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre leJour n'est pas valide");
+        }
+        if (!ReleveJournalier.relevesHeuresValide(relevesHeures)){
+            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre relevesHeures n'est pas valide");
+        }
+        if (!ReleveJournalier.typeAnomalieValide(presenceAnomalie)){
+            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre presenceAnomalie n'est pas valide");
+        }
+        
+        this.leCompteur = leCompteur;
+        this.leJour = leJour;
+        this.relevesHeures = relevesHeures;
+        this.presenceAnomalie = presenceAnomalie;
+    }
+
+
+    public int getLeCompteur() {
         return leCompteur;
     }
 
-    public Jour getLeJour() {
+    public String getLeJour() {
         return leJour;
     }
 
@@ -65,18 +101,18 @@ public class ReleveJournalier {
         return tab;
     }
 
-    public TypeAnomalie getPresenceAnomalie() {
+    public String getPresenceAnomalie() {
         return presenceAnomalie;
     }
 
-    public void setLeCompteur(Compteur leCompteur) {
-        if (leCompteur == null){
+    public void setLeCompteur(int leCompteur) {
+        if (leCompteur == 0){
             throw new IllegalArgumentException("models.ReleveJournalier.setLeCompteur : Le parametre leCompteur n'est pas valide");
         }
         this.leCompteur = leCompteur;
     }
 
-    public void setLeJour(Jour leJour) {
+    public void setLeJour(String leJour) {
         if (leJour == null){
             throw new IllegalArgumentException("models.ReleveJournalier.setLeJour : Le parametre leJour n'est pas valide");
         }
@@ -84,13 +120,16 @@ public class ReleveJournalier {
     }
 
     public void setRelevesHeures(int[] relevesHeures) {
-        if (!this.relevesHeuresValide(relevesHeures)){
+        if (!ReleveJournalier.relevesHeuresValide(relevesHeures)){
             throw new IllegalArgumentException("models.ReleveJournalier.setRelevesHeures : Le parametre relevesHeures n'est pas valide");
         }
         this.relevesHeures = relevesHeures;
     }
 
-    public void setPresenceAnomalie(TypeAnomalie presenceAnomalie) {
+    public void setPresenceAnomalie(String presenceAnomalie) {
+        if (!ReleveJournalier.typeAnomalieValide(presenceAnomalie)){
+            throw new IllegalArgumentException("models.ReleveJournalier.setPresenceAnomalie : Le parametre presenceAnomalie n'est pas valide");
+        }
         this.presenceAnomalie = presenceAnomalie;
     }
 
