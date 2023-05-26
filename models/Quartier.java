@@ -1,6 +1,7 @@
 package models;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Class Quartier
@@ -8,24 +9,26 @@ import java.util.HashMap;
  * length of track
  * 
  * This class save all the quartier in a HashMap, with the id as key
+ * Each quartier has a list of compteur
  */
 public class Quartier {
     
     // ----------------------------- static attributes -----------------------------
 
     /**
-     * HashMap containing all the quartier
+     * HashMap containing all quartier's objects
      * The key is the id of the quartier
      * The value is the quartier object
      * This HashMap allow to get a quartier by his id and verify uniqueness of id
      */
-    private static HashMap<Integer,Quartier>quartierList = new HashMap<Integer,Quartier>();
+    private static HashMap<Integer,Quartier> quartierList = new HashMap<Integer,Quartier>();
 
     // ----------------------------- static methods -----------------------------
 
     /**
      * Get a quartier by his id
      * 
+     * @param id the id of the quartier to get
      * @return the quartier object corresponding to the id, null if not found
      */
     public static Quartier getQuartierById(int id) {
@@ -35,16 +38,18 @@ public class Quartier {
     /**
      * Delete a quartier by his id
      * 
+     * @param id the id of the quartier to delete
      * @return the quartier object corresponding to the id, null if not found
      */
     public static Quartier delQuartierById(int id) {
-        return quartierList.remove(id);
+        return Quartier.quartierList.remove(id);
     }
 
     // ----------------------------- attributes -----------------------------
     private int idQuartier;
     private String nomQuartier;
     private double lgPisteCyclable;
+    private ArrayList<Integer> compteurIdList;
 
     // ----------------------------- constructor -----------------------------
 
@@ -57,16 +62,20 @@ public class Quartier {
      * @param lgPisteCyclable   a double representing the length of the track of the quartier (positive)
      */
     public Quartier(int id, String nom, double lgPisteCyclable) {
-        if (id < 0 || !quartierList.containsKey(id)) {
+        if (id < 0 || quartierList.containsKey(id)) {
             throw new IllegalArgumentException("models.Quartier.constructor : l'id est invalide (<0 ou deja existant)");
         }
 
         this.idQuartier = id;
-        this.setNom(nom);
-        this.setLgPisteCyclable(lgPisteCyclable);
-
-        // add the quartier to the quartierList
-        Quartier.quartierList.put(id, this);
+        try {
+            this.setNom(nom);
+            this.setLgPisteCyclable(lgPisteCyclable);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("models.Quartier.constructor : " + e.getMessage());
+        }
+        this.compteurIdList = new ArrayList<Integer>();
+            
+        Quartier.quartierList.put(id, this); // add the quartier to the quartierList
     }
     
     // ----------------------------- setters -----------------------------
@@ -124,6 +133,48 @@ public class Quartier {
     public double getLgPisteCyclable() {
         return this.lgPisteCyclable;
     }
+    
+    /**
+     * Get the list of compteur of the quartier
+     * 
+     * @return an ArrayList of Integer representing the list of compteur of the quartier
+     */
+    public ArrayList<Integer> getCompteursList() {
+        return new ArrayList<Integer>(this.compteurIdList);
+    }
+    
+    // ----------------------------- add/remove -----------------------------
+
+    /**
+     * Add a compteur to the quartier
+     * /!\ the quartierId of the compteur is not changed
+     * 
+     * @param idCompteur an int representing the id of the compteur to add (positive)
+     */
+    protected void addCompteur(int idCompteur) {
+        if (idCompteur < 0) {
+            throw new IllegalArgumentException("models.Quartier.addCompteur : L'id du compteur doit être positif");
+        }
+        if (!this.compteurIdList.contains(idCompteur)) { // if the compteur is not already in the list
+            this.compteurIdList.add(idCompteur);
+        }
+    }
+
+    /**
+     * Remove a compteur from the quartier
+     * /!\ the quartierId of the compteur is not changed
+     * 
+     * @param idCompteur an int representing the id of the compteur to remove (positive)
+     */
+    protected void removeCompteur(int idCompteur) {
+        if (idCompteur < 0) {
+            throw new IllegalArgumentException("models.Quartier.removeCompteur : L'id du compteur doit être positif");
+        }
+        int indice = this.compteurIdList.indexOf(idCompteur);
+        if (indice != -1) { // if the compteur is in the list
+            this.compteurIdList.remove(indice);
+        }
+    }
 
     // ----------------------------- prints -----------------------------
 
@@ -133,7 +184,8 @@ public class Quartier {
      * @return "nomQuartier#idQuartier : longueurPiste = lgPisteCyclable"
      */
     public String toString() {
-        String ret = this.nomQuartier + "#" + this.idQuartier + " : longueurPiste = " + lgPisteCyclable;
+        String ret = this.nomQuartier + "#" + this.idQuartier + " : nbCompteurs = " + this.compteurIdList.size()
+                + ", longueurPiste = " + this.lgPisteCyclable;
         return ret;
     }
 
@@ -143,7 +195,7 @@ public class Quartier {
      * @return "nomQuartier;idQuartier;lgPisteCyclable"
      */
     public String toCSV() {
-        String ret = this.nomQuartier + ";" + this.idQuartier + ";" + lgPisteCyclable;
+        String ret = this.idQuartier + ";" + this.nomQuartier + ";" + this.lgPisteCyclable;
         return ret;
     }
 }
