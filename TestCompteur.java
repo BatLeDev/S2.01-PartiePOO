@@ -29,7 +29,7 @@ public class TestCompteur {
             new Compteur(1, "Bonduelle", "Nord", 49.7, -1.40);
 
             String expected = "Bonduelle vers Nord#1 : quartier = null, latitude = 49.7, longitude = -1.4";
-            String actual = Compteur.getCompteurById(1).toString();
+            String actual = Compteur.getCompteur(1).toString();
 
             if (!expected.equals(actual)) {
                 printError("\tECHEC : cas normal (peut venir de toString)");
@@ -79,11 +79,11 @@ public class TestCompteur {
     public static void testSetQuartier() {
         System.out.println("\nTest de setQuartier");
 
-        Quartier.delQuartierById(1);
+        Quartier.deleteQuartier(1);
         Quartier q1 = new Quartier(1, "Centre ville", 1000);
         Quartier q2 = new Quartier(2, "Quartier 2", 2000);
 
-        Compteur.delCompteurById(1);
+        Compteur.deleteCompteur(1);
         Compteur c = new Compteur(1, "Bonduelle", "Nord", 49.7, -1.40);
 
         try {
@@ -150,10 +150,10 @@ public class TestCompteur {
     public static void testToCSV() {
         System.out.println("\nTest de toCSV");
 
-        Quartier.delQuartierById(1);
+        Quartier.deleteQuartier(1);
         Quartier q1 = new Quartier(1, "Centre ville", 1000);
 
-        Compteur.delCompteurById(1);
+        Compteur.deleteCompteur(1);
         Compteur c = new Compteur(1, "Bonduelle", "Nord", 49.7, -1.40);
 
         try {

@@ -9,11 +9,11 @@ public class TestQuartier {
     public static int nbError = 0;
 
     public static void main(String[] args) {
-        System.out.println("------ TestCompteur ------");
+        System.out.println("------ TestQuartier ------");
         testConstructor();
         testToCSV();
-        testGetQuartierById();
-        testDelQuartierById();
+        testgetQuartier();
+        testdeleteQuartier();
 
         System.out.println();
         if (nbError == 0) {
@@ -81,9 +81,9 @@ public class TestQuartier {
         }
     }
 
-    public static void testGetQuartierById() {
-        System.out.println("\nTest de getQuartierById");
-        Quartier quartier = Quartier.getQuartierById(10);
+    public static void testgetQuartier() {
+        System.out.println("\nTest de getQuartier");
+        Quartier quartier = Quartier.getQuartier(10);
         String expected = "Quartier Nord#10 : nbCompteurs = 0, longueurPiste = 100.0";
         String actual = quartier.toString();
         if (!expected.equals(actual)) {
@@ -97,7 +97,7 @@ public class TestQuartier {
         }
 
 
-        Quartier q = Quartier.getQuartierById(-1);
+        Quartier q = Quartier.getQuartier(-1);
         if (q != null) {
             printError("\tECHEC : cas d'erreur id inexistant");
             printError("\t\tExpected : null");
@@ -109,14 +109,14 @@ public class TestQuartier {
         }
     }
 
-    public static void testDelQuartierById() {
-        System.out.println("\nTest de delQuartierById");
+    public static void testdeleteQuartier() {
+        System.out.println("\nTest de deleteQuartier");
         // Création d'un quartier
         new Quartier(20, "Quartier Sud", 100.0);
         // Suppression du quartier
-        Quartier.delQuartierById(20);
+        Quartier.deleteQuartier(20);
         // Vérification de la suppression
-        Quartier quartier = Quartier.getQuartierById(20);
+        Quartier quartier = Quartier.getQuartier(20);
         if (quartier != null) {
             printError("\tECHEC : cas normal");
             nbError -= 2;

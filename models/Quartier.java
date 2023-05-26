@@ -31,7 +31,7 @@ public class Quartier {
      * @param id the id of the quartier to get
      * @return the quartier object corresponding to the id, null if not found
      */
-    public static Quartier getQuartierById(int id) {
+    public static Quartier getQuartier(int id) {
         return Quartier.quartierList.get(id);
     }
 
@@ -41,7 +41,7 @@ public class Quartier {
      * @param id the id of the quartier to delete
      * @return the quartier object corresponding to the id, null if not found
      */
-    public static Quartier delQuartierById(int id) {
+    public static Quartier deleteQuartier(int id) {
         return Quartier.quartierList.remove(id);
     }
 

@@ -28,7 +28,7 @@ public class Compteur {
      * 
      * @return the compteur object corresponding to the id
      */
-    public static Compteur getCompteurById(int id) {
+    public static Compteur getCompteur(int id) {
         return Compteur.compteurList.get(id);
     }
 
@@ -37,7 +37,7 @@ public class Compteur {
      * 
      * @return the compteur object corresponding to the id
      */
-    public static Compteur delCompteurById(int id) {
+    public static Compteur deleteCompteur(int id) {
         Compteur c = Compteur.compteurList.remove(id);
         if (c != null && c.getQuartier() != null) {
             c.getQuartier().removeCompteur(id);
@@ -172,7 +172,7 @@ public class Compteur {
                     "models.Compteur.setQuartier : L'id du quartier ne peut pas être négatif");
         }
         
-        Quartier q = Quartier.getQuartierById(idQuartier); // set the new quartier
+        Quartier q = Quartier.getQuartier(idQuartier); // set the new quartier
         if (q == null) {
             throw new IllegalArgumentException(
                     "models.Compteur.setQuartier : L'id du quartier ne correspond à aucun quartier");
