@@ -53,12 +53,21 @@ public class ReleveJournalier {
         return ret;
     }
 
-
+    /**
+     * Get an ArrayList of the ReleveJournalier associated to a Jour
+     * @param idCompteur the date of the Compteur (YYYY-MM-DD)
+     * @return an ArrayList of ReleveJournalier 
+     */
     public static ArrayList<ReleveJournalier> getRelevePourJour (String date){
         ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveJourList.get(date));
         return ret;
     }
 
+    /**
+     * Get an ArrayList of the ReleveJournalier associated to a Compteur
+     * @param idCompteur the id of the Compteur
+     * @return an ArrayList of ReleveJournalier 
+     */
     public static ArrayList<ReleveJournalier> getRelevePourCompteur (int idCompteur){
         ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveComptList.get(idCompteur));
         return ret;
@@ -66,7 +75,7 @@ public class ReleveJournalier {
 
     /**
      * Get the ReleveJournalier by the date of its Jour and the id of its Compteur
-     * @param date the date of the Jour associated
+     * @param date the date of the Jour associated (YYYY-MM-DD)
      * @param idCompteur the id of the Compteur associated
      * @return the ReleveJournalier corresponding to the date and the id
      */
@@ -91,7 +100,13 @@ public class ReleveJournalier {
         return ret;
     }
 
-    public static void deleteReleveJournalier (String date, int idCompteur) {
+    /**
+     * Remove a ReleveJournalier saved by the date of the Jour associated and the id of the Compteur associatedd.
+     * If the ReleveJournalier doesn't exist, do nothing
+     * @param date the date of the Jour associated (YYYY-MM-DD)
+     * @param idCompteur the id of the Compteur associatedd
+     */
+    public static void removeReleveJournalier (String date, int idCompteur) {
         ReleveJournalier releve = getReleveJournalier(date, idCompteur);
         if (releve != null){
             ReleveComptList.get(idCompteur).remove(releve);
@@ -99,11 +114,36 @@ public class ReleveJournalier {
         }
     }
 
+    /**
+     * Remove all the ReleveJournalier associated to this Compteur
+     * If the ReleveJournalier doesn't exist, do nothing
+     * @param idCompteur the id of the Compteur associatedd
+     */
+    public static void removeReleveJournalierPourCompteur(int idCompteur){
+        for (ReleveJournalier releve : getRelevePourCompteur(idCompteur)) {
+            removeReleveJournalier(releve.getLeJour(), idCompteur);
+        }
+    }
 
+    /**
+     * Remove all the ReleveJournalier associated to this Compteur
+     * If the ReleveJournalier doesn't exist, do nothing
+     * @param date the date of the Jour associated (YYYY-MM-DD)
+     */
+    public static void removeReleveJournalierPourJour(String date){
+        for (ReleveJournalier releve : getRelevePourJour(date)) {
+            removeReleveJournalier(date, releve.getLeCompteur());
+        }
+    }
+
+    /**
+     * Remove all the ReleveJournalier saved
+     */
     public static void clear () {
         ReleveComptList.clear();
         ReleveJourList.clear();
     }
+
     // ----------------------------- attributes -----------------------------
     private int leCompteur;
     private String leJour;
