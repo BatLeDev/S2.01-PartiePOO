@@ -1,5 +1,9 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 public class ReleveJournalier {
     
     // ----------------------------- static attributes -----------------------------
@@ -46,6 +50,48 @@ public class ReleveJournalier {
         return ret;
     }
 
+
+    public static ArrayList<ReleveJournalier> getRelevePourJour (String date){
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveJourList.get(date));
+        return ret;
+    }
+
+    public static ArrayList<ReleveJournalier> getRelevePourCompteur (int idCompteur){
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveComptList.get(idCompteur));
+        return ret;
+    }
+
+    /**
+     * retourne le Releve Journalier correspondant a la date et au Compteur passe en parametre
+     * @param date la date du releve
+     * @param idCompteur l'identifiant du compteur du releve
+     * @return le Releve Journalier correspondant a la date passee en parametre
+     */
+    public static ReleveJournalier getReleveJournalier (String date, int idCompteur) {
+        ReleveJournalier ret = null;
+        ArrayList<ReleveJournalier> listJour = getRelevePourJour(date);
+        ArrayList<ReleveJournalier> listCompt = getRelevePourCompteur(idCompteur);
+
+        Iterator<ReleveJournalier> itJour = listJour.iterator();
+        boolean trouve = false;
+        while (itJour.hasNext() && !trouve){
+
+            Iterator<ReleveJournalier> itCompt = listCompt.iterator();
+            ReleveJournalier tmp = itJour.next();
+            while (itCompt.hasNext() && !trouve) {
+                if (tmp == itCompt.next()){
+                    trouve = true;
+                    ret = tmp;
+                }
+            }
+        }
+        return ret;
+    }
+
+    public static void clear () {
+        ReleveComptList.clear();
+        ReleveJourList.clear();
+    }
     // ----------------------------- attributes -----------------------------
     private int leCompteur;
     private String leJour;
