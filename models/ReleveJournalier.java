@@ -1,39 +1,24 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class ReleveJournalier {
     
-    // -------------- Attributs Static -------------- //
-
-
+    // ----------------------------- static attributes -----------------------------
     private static final String[] typeAnomalie = {"Faible","Forte"};
 
-    private static HashMap<Integer,ArrayList<ReleveJournalier>> ReleveComptList = new HashMap<Integer,ArrayList<ReleveJournalier>>();
-    private static HashMap<String,ArrayList<ReleveJournalier>> ReleveJourList = new HashMap<String,ArrayList<ReleveJournalier>>();
+    // ----------------------------- static methods -----------------------------
 
-
+    /**
+     * Check if the type is valid (null or in the list of typeAnomalie)
+     * @param type the type to check
+     * @return true if the type is valid, false otherwise
+     */
     private static boolean typeAnomalieValide(String type) {
-        boolean ret = false;
-        for (String s : typeAnomalie) {
-            if (s.equals(type)) {
-                ret = true;
-            }
-        }
-        return ret;
-    }
+        boolean ret = true;
 
-    private static boolean relevesHeuresValide(int[] relevesHeures) {
-        boolean ret = false;
-
-        if (relevesHeures != null) {
-            if (relevesHeures.length == 24) {
-                int i = 0;
-                while ((i < relevesHeures.length) && (relevesHeures[i] >= 0)) {
-                    i++;
-                }
-                if (i == 24){
+        if (type != null) {
+            ret = false;
+            for (String e : typeAnomalie) {
+                if (e.equals(type)) {
                     ret = true;
                 }
             }
@@ -41,58 +26,82 @@ public class ReleveJournalier {
         return ret;
     }
 
-
-
-    // ---- ----------------- //
-
     /**
-     * retourne le Releve Journalier correspondant a la date et au Compteur passe en parametre
-     * @param date la date du releve
-     * @param idCompteur l'identifiant du compteur du releve
-     * @return le Releve Journalier correspondant a la date passee en parametre
+     * Check if the relevesHeures is valid (not null, length = 24, all values >= 0)
+     * @param relevesHeures the relevesHeures to check
+     * @return true if the relevesHeures is valid, false otherwise
      */
-    public static void getJour (String date, int idCompteur) {
+    private static boolean relevesHeuresValide(int[] relevesHeures) {
+        boolean ret = false;
+
+        if (relevesHeures != null && relevesHeures.length == 24) { // Check valid length
+            ret = true;
+            int i = 0;
+            while (i < relevesHeures.length && ret) { // Check all values >= 0
+                if (relevesHeures[i] < 0) {
+                    ret = false;
+                }
+            }
+        }
+        return ret;
     }
 
-    public static void clear () {
-        ReleveComptList.clear();
-        ReleveJourList.clear();
-    }
-
+    // ----------------------------- attributes -----------------------------
     private int leCompteur;
     private String leJour;
     private int[] relevesHeures;
     String presenceAnomalie;
 
+    /**
+     * Constructor of the class ReleveJournalier
+     * can launch an IllegalArgumentException if the parameters are not valid
+     * 
+     * @param leCompteur the id of the compteur (positive)
+     * @param leJour the day of the releve (not null or empty)
+     * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values >= 0)
+     * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of typeAnomalie)
+     */
     public ReleveJournalier (int leCompteur , String leJour , int[] relevesHeures , String presenceAnomalie){
-        if ((Compteur.getCompteur(leCompteur) == null)){
+        if (Compteur.getCompteur(leCompteur) == null){
             throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre leCompteur n'est pas valide");
         }
-        if ((leJour == null) && (Jour.getJour(leJour) == null)){
+        if (Jour.getJour(leJour) == null){
             throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre leJour n'est pas valide");
         }
-        if (!ReleveJournalier.relevesHeuresValide(relevesHeures)){
-            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre relevesHeures n'est pas valide");
-        }
-        if (!ReleveJournalier.typeAnomalieValide(presenceAnomalie)){
-            throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre presenceAnomalie n'est pas valide");
-        }
-        
         this.leCompteur = leCompteur;
         this.leJour = leJour;
-        this.relevesHeures = relevesHeures;
-        this.presenceAnomalie = presenceAnomalie;
+
+        try {
+            this.setRelevesHeures(relevesHeures);
+            this.setPresenceAnomalie(presenceAnomalie);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("models.ReleveJournalier.constructor : " + e.getMessage());
+        }
     }
 
+    // ----------------------------- getters -----------------------------
 
+    /**
+     * Get the compteur of the releve
+     * @return the compteur id of the releve
+     */
     public int getLeCompteur() {
         return leCompteur;
     }
 
+    /**
+     * Get the day of the releve
+     * @return the date of the releve
+     */
     public String getLeJour() {
         return leJour;
     }
 
+    /**
+     * Get the relevesHeures of the releve
+     * 
+     * @return an array of int representing the relevesHeures of the releve
+     */
     public int[] getRelevesHeures() {
         int[] tab = new int[24];
         for (int i = 0; i < 24; i++){
@@ -101,24 +110,22 @@ public class ReleveJournalier {
         return tab;
     }
 
+    /**
+     * Get the presenceAnomalie of the releve
+     * @return null, "Faible" or "Forte"
+     */
     public String getPresenceAnomalie() {
         return presenceAnomalie;
     }
 
-    public void setLeCompteur(int leCompteur) {
-        if (leCompteur == 0){
-            throw new IllegalArgumentException("models.ReleveJournalier.setLeCompteur : Le parametre leCompteur n'est pas valide");
-        }
-        this.leCompteur = leCompteur;
-    }
+    // ----------------------------- setters -----------------------------
 
-    public void setLeJour(String leJour) {
-        if (leJour == null){
-            throw new IllegalArgumentException("models.ReleveJournalier.setLeJour : Le parametre leJour n'est pas valide");
-        }
-        this.leJour = leJour;
-    }
-
+    /**
+     * Set the relevesHeures of the releve
+     * can launch an IllegalArgumentException if the parameters are not valid
+     * 
+     * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values >= 0)
+     */
     public void setRelevesHeures(int[] relevesHeures) {
         if (!ReleveJournalier.relevesHeuresValide(relevesHeures)){
             throw new IllegalArgumentException("models.ReleveJournalier.setRelevesHeures : Le parametre relevesHeures n'est pas valide");
@@ -126,6 +133,10 @@ public class ReleveJournalier {
         this.relevesHeures = relevesHeures;
     }
 
+    /**
+     * Set the presenceAnomalie of the releve
+     * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of typeAnomalie)
+     */
     public void setPresenceAnomalie(String presenceAnomalie) {
         if (!ReleveJournalier.typeAnomalieValide(presenceAnomalie)){
             throw new IllegalArgumentException("models.ReleveJournalier.setPresenceAnomalie : Le parametre presenceAnomalie n'est pas valide");
@@ -133,13 +144,13 @@ public class ReleveJournalier {
         this.presenceAnomalie = presenceAnomalie;
     }
 
-    public double getPassageHoraire (int heure){
-        if ((heure < 0) || (heure > 23)){
-            throw new IllegalArgumentException("models.ReleveJournalier.getPassageHoraire : Le parametre heure n'est pas valide");
-        }
-        return relevesHeures[heure];
-    }
-
+    /**
+     * Set the relevesHeures of the releve at the hour
+     * can launch an IllegalArgumentException if the parameters are not valid
+     * 
+     * @param heure the hour of the releve (between 0 and 23)
+     * @param nbPassage the relevesHeures of the releve at the hour (positive or 0)
+     */
     public void setPassageHoraire (int heure , int nbPassage){
         if ((heure < 0) || (heure > 23)){
             throw new IllegalArgumentException("models.ReleveJournalier.setPassageHoraire : Le parametre heure n'est pas valide");
@@ -150,7 +161,28 @@ public class ReleveJournalier {
         relevesHeures[heure] = nbPassage;
     }
 
-    public int getPassageJour() {
+    // ----------------------------- methods -----------------------------
+
+    /**
+     * Get the relevesHeures of the releve at the hour
+     * can launch an IllegalArgumentException if the parameters are not valid
+     * 
+     * @param heure the hour of the releve (between 0 and 23)
+     * @return the relevesHeures of the releve at the hour
+     */
+    public double getPassageHoraire(int heure) {
+        if ((heure < 0) || (heure > 23)) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.getPassageHoraire : Le parametre heure n'est pas valide");
+        }
+        return relevesHeures[heure];
+    }
+
+    /**
+     * Get the total relevesHeures of the releve
+     * @return the total relevesHeures of the releve
+     */
+    public int getNbPassageJour() {
         int ret = 0;
         for (int i = 0; i < relevesHeures.length; i++) {
             ret += relevesHeures[i];
@@ -158,6 +190,10 @@ public class ReleveJournalier {
         return ret;
     }
 
+    /**
+     * Get the average relevesHeures of the releve
+     * @return the average relevesHeures of the releve
+     */
     public double getMoyennePassageHoraire(){
         double ret = 0;
         int nbPassage = 0;
