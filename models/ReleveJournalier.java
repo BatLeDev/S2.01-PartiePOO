@@ -7,6 +7,9 @@ import java.util.Iterator;
 public class ReleveJournalier {
     
     // ----------------------------- static attributes -----------------------------
+    private static HashMap<Integer, ArrayList<ReleveJournalier>> ReleveComptList = new HashMap<Integer, ArrayList<ReleveJournalier>>();
+    private static HashMap<String, ArrayList<ReleveJournalier>> ReleveJourList = new HashMap<String, ArrayList<ReleveJournalier>>();
+    
     private static final String[] typeAnomalie = {"Faible","Forte"};
 
     // ----------------------------- static methods -----------------------------
