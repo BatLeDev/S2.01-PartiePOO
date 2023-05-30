@@ -65,10 +65,10 @@ public class ReleveJournalier {
     }
 
     /**
-     * retourne le Releve Journalier correspondant a la date et au Compteur passe en parametre
-     * @param date la date du releve
-     * @param idCompteur l'identifiant du compteur du releve
-     * @return le Releve Journalier correspondant a la date passee en parametre
+     * Get the ReleveJournalier by the date of its Jour and the id of its Compteur
+     * @param date the date of the Jour associated
+     * @param idCompteur the id of the Compteur associated
+     * @return the ReleveJournalier corresponding to the date and the id
      */
     public static ReleveJournalier getReleveJournalier (String date, int idCompteur) {
         ReleveJournalier ret = null;
@@ -90,6 +90,15 @@ public class ReleveJournalier {
         }
         return ret;
     }
+
+    public static void deleteReleveJournalier (String date, int idCompteur) {
+        ReleveJournalier releve = getReleveJournalier(date, idCompteur);
+        if (releve != null){
+            ReleveComptList.get(idCompteur).remove(releve);
+            ReleveJourList.get(date).remove(releve);
+        }
+    }
+
 
     public static void clear () {
         ReleveComptList.clear();
