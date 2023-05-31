@@ -99,7 +99,7 @@ public class Jour {
      * @param jour the day of the week
      * @param vacances the holidays (null if there is no holidays)
      */
-    public Jour(String date, double temperatureMoyenne, String jour, String vacances) {
+    public Jour(String date, String jour, String vacances, double temperatureMoyenne) {
         if (!Jour.dateValide(date)) {
             throw new IllegalArgumentException("models.Jour.constructor : Le parametre date n'est pas valide");
         }
@@ -239,9 +239,9 @@ public class Jour {
      * 
      * @return true if the day is a holiday, false otherwise
      */
-    public boolean estVacances(){
+    public boolean estVacances() {
         boolean ret = false;
-        if (this.vacances != null){
+        if (this.vacances != null) {
             ret = true;
         }
         return ret;

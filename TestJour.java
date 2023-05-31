@@ -30,7 +30,7 @@ public class TestJour {
     private static void testConstructor() {
         System.out.println("\nTest du constructeur");
         try {
-            Jour jour1 = new Jour("2023-05-30", 25.5, "Lundi", null);
+            new Jour("2023-05-30", "Lundi", null, 25.5);
             printOk("OK : Constructor test passed");
         } catch (IllegalArgumentException e) {
             printError("ECHEC : Constructor test failed: " + e.getMessage());
@@ -39,7 +39,7 @@ public class TestJour {
 
     private static void testDeleteJour() {
         System.out.println("\nTest de deleteJour");
-        Jour jour2 = new Jour("2023-06-15", 21.5, "Jeudi", null);
+        new Jour("2023-06-15", "Jeudi", null, 21.5);
         Jour.deleteJour("2023-06-15");
 
         if (Jour.getJour("2023-06-15") == null) {
@@ -51,7 +51,7 @@ public class TestJour {
 
     private static void testSetJourString() {
         System.out.println("\nTest de setJour(String)");
-        Jour jour3 = new Jour("2023-04-25", 25.5, "Lundi", null);
+        Jour jour3 = new Jour("2023-04-25", "Lundi", null, 25.5);
         jour3.setJour("Mardi");
 
         if (jour3.getJour().equals("Mardi")) {
@@ -63,7 +63,7 @@ public class TestJour {
 
     private static void testSetJourInt() {
         System.out.println("\nTest de setJour(int)");
-        Jour jour4 = new Jour("2023-05-14", 25.5, "Lundi", null);
+        Jour jour4 = new Jour("2023-05-14", "Lundi", null, 25.5);
         jour4.setJour(2);
 
         if (jour4.getJour().equals("Mercredi")) {
@@ -75,7 +75,7 @@ public class TestJour {
 
     private static void testSetTemperatureMoyenne() {
         System.out.println("\nTest de setTemperatureMoyenne");
-        Jour jour5 = new Jour("2023-05-02", 25.5, "Lundi", null);
+        Jour jour5 = new Jour("2023-05-02", "Lundi", null, 25.5);
         jour5.setTemperatureMoyenne(20.3);
 
         if (jour5.getTemperatureMoyenne() == 20.3) {
@@ -87,9 +87,9 @@ public class TestJour {
 
     private static void testEstWeekend() {
         System.out.println("\nTest de estWeekend");
-        Jour jour6 = new Jour("2023-11-01", 25.5, "Lundi", null);
-        Jour jour7 = new Jour("2023-11-02", 24.8, "Mardi", null);
-        Jour jour8 = new Jour("2023-11-03", 23.7, "Samedi", null);
+        Jour jour6 = new Jour("2023-11-01", "Lundi", null, 25.5);
+        Jour jour7 = new Jour("2023-11-02", "Mardi", null, 24.8);
+        Jour jour8 = new Jour("2023-11-03", "Samedi", null, 23.7);
 
         if (!jour6.estWeekEnd() && !jour7.estWeekEnd() && jour8.estWeekEnd()) {
             printOk("OK : estWeekend test passed");
@@ -100,9 +100,9 @@ public class TestJour {
 
     private static void testEstVacances() {
         System.out.println("\nTest de estVacances");
-        Jour jour9 = new Jour("2023-12-01", 25.5, "Lundi", null);
-        Jour jour10 = new Jour("2023-12-02", 24.8, "Mardi", "Noel");
-        Jour jour11 = new Jour("2023-12-03", 23.7, "Samedi", "Ete");
+        Jour jour9 = new Jour("2023-12-01", "Lundi", null, 25.5);
+        Jour jour10 = new Jour("2023-12-02", "Mardi", "Noel", 24.8);
+        Jour jour11 = new Jour("2023-12-03", "Samedi", "Ete", 23.7);
 
         if (!jour9.estVacances() && jour10.estVacances() && jour11.estVacances()) {
             printOk("OK : estVacances test passed");
