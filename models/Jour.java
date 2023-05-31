@@ -17,8 +17,8 @@ public class Jour {
      */
     private static HashMap<String, Jour> jourList = new HashMap<String, Jour>();
 
-    private static String[] valideJours = { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" };
-    private static String[] valideVacances = { "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps" };
+    private static final String[] valideJours = { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" };
+    private static final String[] valideVacances = { "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps" };
 
     // ----------------------------- static methods -----------------------------
 
