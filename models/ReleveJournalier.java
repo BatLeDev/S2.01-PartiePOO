@@ -7,7 +7,16 @@ import java.util.Iterator;
 public class ReleveJournalier {
     
     // ----------------------------- static attributes -----------------------------
+
+    // These two HashMap are used to preserve the unicity of a ReleveJournalier
+    /**
+     * The list of all the ReleveJournalier associated to a Compteur
+     */
     private static HashMap<Integer, ArrayList<ReleveJournalier>> ReleveComptList = new HashMap<Integer, ArrayList<ReleveJournalier>>();
+    
+    /**
+     * The list of all the ReleveJournalier associated to a Jour
+     */
     private static HashMap<String, ArrayList<ReleveJournalier>> ReleveJourList = new HashMap<String, ArrayList<ReleveJournalier>>();
     
     private static final String[] typeAnomalie = {"Faible","Forte"};
@@ -53,45 +62,27 @@ public class ReleveJournalier {
         return ret;
     }
 
-    /**
-     * Get an ArrayList of the ReleveJournalier associated to a Jour
-     * @param idCompteur the date of the Compteur (YYYY-MM-DD)
-     * @return an ArrayList of ReleveJournalier 
-     */
-    public static ArrayList<ReleveJournalier> getRelevePourJour (String date){
-        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveJourList.get(date));
-        return ret;
-    }
-
-    /**
-     * Get an ArrayList of the ReleveJournalier associated to a Compteur
-     * @param idCompteur the id of the Compteur
-     * @return an ArrayList of ReleveJournalier 
-     */
-    public static ArrayList<ReleveJournalier> getRelevePourCompteur (int idCompteur){
-        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveComptList.get(idCompteur));
-        return ret;
-    }
 
     /**
      * Get the ReleveJournalier by the date of its Jour and the id of its Compteur
-     * @param date the date of the Jour associated (YYYY-MM-DD)
+     * 
+     * @param date       the date of the Jour associated (YYYY-MM-DD)
      * @param idCompteur the id of the Compteur associated
-     * @return the ReleveJournalier corresponding to the date and the id
+     * @return the a ReleveJournalier, null if it doesn't exist 
      */
-    public static ReleveJournalier getReleveJournalier (String date, int idCompteur) {
+    public static ReleveJournalier getReleveJournalier(String date, int idCompteur) {
         ReleveJournalier ret = null;
-        ArrayList<ReleveJournalier> listJour = getRelevePourJour(date);
-        ArrayList<ReleveJournalier> listCompt = getRelevePourCompteur(idCompteur);
+        ArrayList<ReleveJournalier> listJour = getRelevesByJour(date);
+        ArrayList<ReleveJournalier> listCompt = getReleveByCompteur(idCompteur);
 
         Iterator<ReleveJournalier> itJour = listJour.iterator();
         boolean trouve = false;
-        while (itJour.hasNext() && !trouve){
+        while (itJour.hasNext() && !trouve) {
 
             Iterator<ReleveJournalier> itCompt = listCompt.iterator();
             ReleveJournalier tmp = itJour.next();
             while (itCompt.hasNext() && !trouve) {
-                if (tmp == itCompt.next()){
+                if (tmp == itCompt.next()) {
                     trouve = true;
                     ret = tmp;
                 }
@@ -101,56 +92,81 @@ public class ReleveJournalier {
     }
 
     /**
+     * Get an ArrayList of the ReleveJournalier associated to a Jour
+     * 
+     * @param date the date of the Compteur (YYYY-MM-DD)
+     * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Jour
+     */
+    public static ArrayList<ReleveJournalier> getRelevesByJour(String date){
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveJourList.get(date));
+        return ret;
+    }
+
+    /**
+     * Get an ArrayList of the ReleveJournalier associated to a Compteur
+     * @param idCompteur the id of the Compteur
+     * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Compteur
+     */
+    public static ArrayList<ReleveJournalier> getReleveByCompteur(int idCompteur){
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveComptList.get(idCompteur));
+        return ret;
+    }
+
+
+    /**
      * Remove a ReleveJournalier saved by the date of the Jour associated and the id of the Compteur associatedd.
      * If the ReleveJournalier doesn't exist, do nothing
+     * 
      * @param date the date of the Jour associated (YYYY-MM-DD)
      * @param idCompteur the id of the Compteur associatedd
+     * @return the ReleveJournalier removed, null if it doesn't exist
      */
-    public static void removeReleveJournalier (String date, int idCompteur) {
+    public static ReleveJournalier removeReleveJournalier(String date, int idCompteur) {
         ReleveJournalier releve = getReleveJournalier(date, idCompteur);
-        if (releve != null){
+        if (releve != null) {
             ReleveComptList.get(idCompteur).remove(releve);
             ReleveJourList.get(date).remove(releve);
         }
+        return releve;
     }
 
     /**
      * Remove all the ReleveJournalier associated to this Compteur
      * If the ReleveJournalier doesn't exist, do nothing
-     * @param idCompteur the id of the Compteur associatedd
-     */
-    public static void removeReleveJournalierPourCompteur(int idCompteur){
-        for (ReleveJournalier releve : getRelevePourCompteur(idCompteur)) {
-            removeReleveJournalier(releve.getLeJour(), idCompteur);
-        }
-    }
-
-    /**
-     * Remove all the ReleveJournalier associated to this Compteur
-     * If the ReleveJournalier doesn't exist, do nothing
+     * 
      * @param date the date of the Jour associated (YYYY-MM-DD)
+     * @return an ArrayList of the ReleveJournalier removed, null if there aren't any ReleveJournalier for this Jour
      */
-    public static void removeReleveJournalierPourJour(String date){
-        for (ReleveJournalier releve : getRelevePourJour(date)) {
+    public static ArrayList<ReleveJournalier> removeAllRelevesOfAJour(String date) {
+        ArrayList<ReleveJournalier> releves = getRelevesByJour(date);
+        for (ReleveJournalier releve : releves) {
             removeReleveJournalier(date, releve.getLeCompteur());
         }
+        return releves;
     }
 
     /**
-     * Remove all the ReleveJournalier saved
+     * Remove all the ReleveJournalier associated to this Compteur
+     * If the ReleveJournalier doesn't exist, do nothing
+     * 
+     * @param idCompteur the id of the Compteur associated
+     * @return an ArrayList of the ReleveJournalier removed, null if there aren't any ReleveJournalier for this Compteur
      */
-    public static void clear () {
-        ReleveComptList.clear();
-        ReleveJourList.clear();
+    public static ArrayList<ReleveJournalier> removeAllRelevesOfACompteur(int idCompteur) {
+        ArrayList<ReleveJournalier> releves = getReleveByCompteur(idCompteur);
+        for (ReleveJournalier releve : releves) {
+            removeReleveJournalier(releve.getLeJour(), idCompteur);
+        }
+        return releves;
     }
 
     // ----------------------------- attributes -----------------------------
     private int leCompteur;
     private String leJour;
     private int[] relevesHeures;
-    String presenceAnomalie;
+    private String presenceAnomalie;
 
-    /**
+    /** 
      * Constructor of the class ReleveJournalier
      * can launch an IllegalArgumentException if the parameters are not valid
      * 
@@ -159,7 +175,7 @@ public class ReleveJournalier {
      * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values >= 0)
      * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of typeAnomalie)
      */
-    public ReleveJournalier (int leCompteur , String leJour , int[] relevesHeures , String presenceAnomalie){
+    public ReleveJournalier(int leCompteur , String leJour , int[] relevesHeures , String presenceAnomalie){
         if (Compteur.getCompteur(leCompteur) == null){
             throw new IllegalArgumentException("models.ReleveJournalier.constructor : Le parametre leCompteur n'est pas valide");
         }
@@ -177,6 +193,56 @@ public class ReleveJournalier {
         }
     }
 
+    // ----------------------------- setters -----------------------------
+
+    /**
+     * Set the relevesHeures of the releve
+     * can launch an IllegalArgumentException if the parameters are not valid
+     * 
+     * @param relevesHeures the relevesHeures of the releve (not null, length = 24,
+     *                      all values >= 0)
+     */
+    public void setRelevesHeures(int[] relevesHeures) {
+        if (!ReleveJournalier.relevesHeuresValide(relevesHeures)) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.setRelevesHeures : Le parametre relevesHeures n'est pas valide");
+        }
+        this.relevesHeures = relevesHeures;
+    }
+
+    /**
+     * Set the presenceAnomalie of the releve
+     * 
+     * @param presenceAnomalie the presenceAnomalie of the releve (null or in the
+     *                         list of typeAnomalie)
+     */
+    public void setPresenceAnomalie(String presenceAnomalie) {
+        if (!ReleveJournalier.typeAnomalieValide(presenceAnomalie)) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.setPresenceAnomalie : Le parametre presenceAnomalie n'est pas valide");
+        }
+        this.presenceAnomalie = presenceAnomalie;
+    }
+
+    /**
+     * Set the relevesHeures of the releve at the hour
+     * can launch an IllegalArgumentException if the parameters are not valid
+     * 
+     * @param heure     the hour of the releve (between 0 and 23)
+     * @param nbPassage the relevesHeures of the releve at the hour (positive or 0)
+     */
+    public void setPassageHoraire(int heure, int nbPassage) {
+        if ((heure < 0) || (heure > 23)) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.setPassageHoraire : Le parametre heure n'est pas valide");
+        }
+        if (nbPassage < 0) {
+            throw new IllegalArgumentException(
+                    "models.ReleveJournalier.setPassageHoraire : Le parametre nbPassage n'est pas valide");
+        }
+        relevesHeures[heure] = nbPassage;
+    }
+    
     // ----------------------------- getters -----------------------------
 
     /**
@@ -214,49 +280,6 @@ public class ReleveJournalier {
      */
     public String getPresenceAnomalie() {
         return presenceAnomalie;
-    }
-
-    // ----------------------------- setters -----------------------------
-
-    /**
-     * Set the relevesHeures of the releve
-     * can launch an IllegalArgumentException if the parameters are not valid
-     * 
-     * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values >= 0)
-     */
-    public void setRelevesHeures(int[] relevesHeures) {
-        if (!ReleveJournalier.relevesHeuresValide(relevesHeures)){
-            throw new IllegalArgumentException("models.ReleveJournalier.setRelevesHeures : Le parametre relevesHeures n'est pas valide");
-        }
-        this.relevesHeures = relevesHeures;
-    }
-
-    /**
-     * Set the presenceAnomalie of the releve
-     * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of typeAnomalie)
-     */
-    public void setPresenceAnomalie(String presenceAnomalie) {
-        if (!ReleveJournalier.typeAnomalieValide(presenceAnomalie)){
-            throw new IllegalArgumentException("models.ReleveJournalier.setPresenceAnomalie : Le parametre presenceAnomalie n'est pas valide");
-        }
-        this.presenceAnomalie = presenceAnomalie;
-    }
-
-    /**
-     * Set the relevesHeures of the releve at the hour
-     * can launch an IllegalArgumentException if the parameters are not valid
-     * 
-     * @param heure the hour of the releve (between 0 and 23)
-     * @param nbPassage the relevesHeures of the releve at the hour (positive or 0)
-     */
-    public void setPassageHoraire (int heure , int nbPassage){
-        if ((heure < 0) || (heure > 23)){
-            throw new IllegalArgumentException("models.ReleveJournalier.setPassageHoraire : Le parametre heure n'est pas valide");
-        }
-        if (nbPassage < 0){
-            throw new IllegalArgumentException("models.ReleveJournalier.setPassageHoraire : Le parametre nbPassage n'est pas valide");
-        }
-        relevesHeures[heure] = nbPassage;
     }
 
     // ----------------------------- methods -----------------------------
