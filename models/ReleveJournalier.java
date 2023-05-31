@@ -288,10 +288,10 @@ public class ReleveJournalier {
      * Get the relevesHeures of the releve at the hour
      * can launch an IllegalArgumentException if the parameters are not valid
      * 
-     * @param heure the hour of the releve (between 0 and 23)
-     * @return the relevesHeures of the releve at the hour
+     * @param heure the hour to know (between 0 and 23)
+     * @return the number of passage of the releve at this hour
      */
-    public double getPassageHoraire(int heure) {
+    public int getPassageHoraire(int heure) {
         if ((heure < 0) || (heure > 23)) {
             throw new IllegalArgumentException(
                     "models.ReleveJournalier.getPassageHoraire : Le parametre heure n'est pas valide");
@@ -300,10 +300,10 @@ public class ReleveJournalier {
     }
 
     /**
-     * Get the total relevesHeures of the releve
+     * Get the total of nbPassage of the releve
      * @return the total relevesHeures of the releve
      */
-    public int getNbPassageJour() {
+    public int getNbPassageTotal() {
         int ret = 0;
         for (int i = 0; i < relevesHeures.length; i++) {
             ret += relevesHeures[i];
@@ -312,10 +312,10 @@ public class ReleveJournalier {
     }
 
     /**
-     * Get the average relevesHeures of the releve
+     * Get the average of nbPassage by hour of the releve
      * @return the average relevesHeures of the releve
      */
-    public double getMoyennePassageHoraire(){
+    public double getMoyennePassageByHour(){
         double ret = 0;
         int nbPassage = 0;
         for (int i = 0; i < relevesHeures.length; i++) {
