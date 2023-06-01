@@ -12,19 +12,19 @@ public class ReleveJournalier {
     /**
      * The list of all the ReleveJournalier associated to a Compteur
      */
-    private static HashMap<Integer, ArrayList<ReleveJournalier>> ReleveComptList = new HashMap<Integer, ArrayList<ReleveJournalier>>();
+    private static HashMap<Integer, ArrayList<ReleveJournalier>> releveComptList = new HashMap<Integer, ArrayList<ReleveJournalier>>();
     
     /**
      * The list of all the ReleveJournalier associated to a Jour
      */
-    private static HashMap<String, ArrayList<ReleveJournalier>> ReleveJourList = new HashMap<String, ArrayList<ReleveJournalier>>();
+    private static HashMap<String, ArrayList<ReleveJournalier>> releveJourList = new HashMap<String, ArrayList<ReleveJournalier>>();
     
-    private static final String[] typeAnomalie = {"Faible","Forte"};
+    private static final String[] TYPE_ANOMALIE = {"Faible","Forte"};
 
     // ----------------------------- static methods -----------------------------
 
     /**
-     * Check if the type is valid (null or in the list of typeAnomalie)
+     * Check if the type is valid (null or in the list of TYPE_ANOMALIE)
      * @param type the type to check
      * @return true if the type is valid, false otherwise
      */
@@ -33,7 +33,7 @@ public class ReleveJournalier {
 
         if (type != null) {
             ret = false;
-            for (String e : typeAnomalie) {
+            for (String e : TYPE_ANOMALIE) {
                 if (e.equals(type)) {
                     ret = true;
                 }
@@ -62,7 +62,7 @@ public class ReleveJournalier {
         return ret;
     }
 
-
+    // -----------------------------
     /**
      * Get the ReleveJournalier by the date of its Jour and the id of its Compteur
      * 
@@ -98,7 +98,7 @@ public class ReleveJournalier {
      * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Jour
      */
     public static ArrayList<ReleveJournalier> getRelevesByJour(String date){
-        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveJourList.get(date));
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (releveJourList.get(date));
         return ret;
     }
 
@@ -108,11 +108,11 @@ public class ReleveJournalier {
      * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Compteur
      */
     public static ArrayList<ReleveJournalier> getReleveByCompteur(int idCompteur){
-        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveComptList.get(idCompteur));
+        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (releveComptList.get(idCompteur));
         return ret;
     }
 
-
+    // -----------------------------
     /**
      * Remove a ReleveJournalier saved by the date of the Jour associated and the id of the Compteur associatedd.
      * If the ReleveJournalier doesn't exist, do nothing
@@ -124,8 +124,8 @@ public class ReleveJournalier {
     public static ReleveJournalier removeReleveJournalier(String date, int idCompteur) {
         ReleveJournalier releve = getReleveJournalier(date, idCompteur);
         if (releve != null) {
-            ReleveComptList.get(idCompteur).remove(releve);
-            ReleveJourList.get(date).remove(releve);
+            releveComptList.get(idCompteur).remove(releve);
+            releveJourList.get(date).remove(releve);
         }
         return releve;
     }
@@ -173,7 +173,7 @@ public class ReleveJournalier {
      * @param leCompteur the id of the compteur (positive)
      * @param leJour the day of the releve (not null or empty)
      * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values >= 0)
-     * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of typeAnomalie)
+     * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of TYPE_ANOMALIE)
      */
     public ReleveJournalier(int leCompteur , String leJour , int[] relevesHeures , String presenceAnomalie){
         if (Compteur.getCompteur(leCompteur) == null){
@@ -214,7 +214,7 @@ public class ReleveJournalier {
      * Set the presenceAnomalie of the releve
      * 
      * @param presenceAnomalie the presenceAnomalie of the releve (null or in the
-     *                         list of typeAnomalie)
+     *                         list of TYPE_ANOMALIE)
      */
     public void setPresenceAnomalie(String presenceAnomalie) {
         if (!ReleveJournalier.typeAnomalieValide(presenceAnomalie)) {
