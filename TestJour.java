@@ -25,36 +25,33 @@ public class TestJour {
         }    
     }
 
-
-
     private static void testConstructor() {
         System.out.println("\nTest du constructeur");
         try {
             new Jour("2023-05-30", "Lundi", null, 25.5);
-            printOk("OK : Constructor test passed");
+            printOk("Constructor test passed");
         } catch (IllegalArgumentException e) {
-            printError("ECHEC : Constructor test failed: " + e.getMessage());
+            printError("Constructor test failed: " + e.getMessage());
         }
     
         // Invalid date format
         try {
             new Jour("2023/05/30", "Lundi", null, 25.5);
-            printError("ECHEC : Constructor test failed: Invalid date format");
+            printError("Constructor test failed: Invalid date format");
         } catch (IllegalArgumentException e) {
-            printOk("OK : Constructor test passed: Invalid date format");
+            printOk("Constructor test passed: Invalid date format");
         }
     
         // Existing date
         try {
             new Jour("2023-05-30", "Mardi", null, 24.8);
             new Jour("2023-05-30", "Mercredi", null, 23.7);
-            printError("ECHEC : Constructor test failed: Existing date");
+            printError("Constructor test failed: Existing date");
         } catch (IllegalArgumentException e) {
-            printOk("OK : Constructor test passed: Existing date");
+            printOk("Constructor test passed: Existing date");
         }
     }
 
-    
     private static void testDeleteJour() {
         System.out.println("\nTest de deleteJour");
         // Valid case
@@ -63,15 +60,14 @@ public class TestJour {
             Jour.deleteJour("2023-05-31");
             Jour deletedJour = Jour.getJour("2023-05-31");
             if (deletedJour == null) {
-                printOk("OK : deleteJour test passed");
+                printOk("deleteJour test passed");
             } else {
-                printError("ECHEC : deleteJour test failed: Jour still exists");
+                printError("deleteJour test failed: Jour still exists");
             }
         } catch (IllegalArgumentException e) {
-            printError("ECHEC : deleteJour test failed: " + e.getMessage());
+            printError("deleteJour test failed: " + e.getMessage());
         }
     }
-
 
     private static void testSetJourString() {
         System.out.println("\nTest de setJour(String)");
@@ -176,13 +172,14 @@ public class TestJour {
         }
     }
 
+    // Affichages
     private static void printOk(String message) {
-        System.out.println(COLOR_OK + message + COLOR_RESET);
+        System.out.println(COLOR_OK + "OK : " + message + COLOR_RESET);
         nbTest++;
     }
 
     private static void printError(String message) {
-        System.out.println(COLOR_ERROR + message + COLOR_RESET);
+        System.out.println(COLOR_ERROR + "ERROR : " + message + COLOR_RESET);
         nbTest++;
         nbError++;
     }
