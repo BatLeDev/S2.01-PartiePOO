@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * length of track
  * 
  * This class save all the quartier in a HashMap, with the id as key
- * Each quartier has a list of compteur
+ * Each quartier has a list of compteur id
  */
 public class Quartier {
     
@@ -32,17 +32,17 @@ public class Quartier {
      * @return the quartier object corresponding to the id, null if not found
      */
     public static Quartier getQuartier(int id) {
-        return Quartier.quartierList.get(id);
+        return Quartier.quartierList.get(id); // Quartier if found, null if not
     }
 
     /**
-     * Delete a quartier by his id
+     * Delete a quartier by its id
      * 
      * @param id the id of the quartier to delete
      * @return the quartier object corresponding to the id, null if not found
      */
     public static Quartier deleteQuartier(int id) {
-        return Quartier.quartierList.remove(id);
+        return Quartier.quartierList.remove(id); // Quartier if found, null if not
     }
 
     // ----------------------------- attributes -----------------------------
@@ -55,9 +55,9 @@ public class Quartier {
 
     /**
      * Constructor of the class Quartier
-     * can launch an IllegalArgumentException in setters if the parameters are not valid
+     * can launch an IllegalArgumentException if parameters arn't valid
      * 
-     * @param id                an integer representing the (unique) id of the quartier (positive)
+     * @param id                an integer representing the (unique, positive) id of the quartier
      * @param nom               a String representing the name of the quartier (not null or empty)
      * @param lgPisteCyclable   a double representing the length of the track of the quartier (positive)
      */
@@ -140,16 +140,16 @@ public class Quartier {
      * @return an ArrayList of Integer representing the list of compteur of the quartier
      */
     public ArrayList<Integer> getCompteursList() {
-        return new ArrayList<Integer>(this.compteurIdList);
+        return new ArrayList<Integer>(this.compteurIdList); // return a copy of the list
     }
     
     // ----------------------------- add/remove -----------------------------
 
     /**
      * Add a compteur to the quartier
-     * /!\ the quartierId of the compteur is not changed
+     * /!\ the quartierId of the compteur object is not updated in this method
      * 
-     * @param idCompteur an int representing the id of the compteur to add (positive)
+     * @param idCompteur an int representing the id of compteur to save (positive)
      */
     protected void addCompteur(int idCompteur) {
         if (idCompteur < 0) {
@@ -162,9 +162,9 @@ public class Quartier {
 
     /**
      * Remove a compteur from the quartier
-     * /!\ the quartierId of the compteur is not changed
+     * /!\ the quartierId of the compteur is not updated in this method
      * 
-     * @param idCompteur an int representing the id of the compteur to remove (positive)
+     * @param idCompteur an int representing the id of compteur to remove (positive)
      */
     protected void removeCompteur(int idCompteur) {
         if (idCompteur < 0) {
@@ -181,7 +181,7 @@ public class Quartier {
     /**
      * Get a String representing the quartier
      * 
-     * @return "nomQuartier#idQuartier : longueurPiste = lgPisteCyclable"
+     * @return "nomQuartier#idQuartier : nbCompteurs = len(compteurList), longueurPiste = lgPisteCyclable"
      */
     public String toString() {
         String ret = this.nomQuartier + "#" + this.idQuartier + " : nbCompteurs = " + this.compteurIdList.size()
