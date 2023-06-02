@@ -24,7 +24,7 @@ public class Compteur {
     // ----------------------------- static methods -----------------------------
 
     /**
-     * Get a compteur by his id
+     * Get a compteur by its id
      * 
      * @return the compteur object corresponding to the id
      */
@@ -33,7 +33,7 @@ public class Compteur {
     }
 
     /**
-     * Delete a compteur by his id
+     * Delete a compteur by its id
      * 
      * @return the compteur object corresponding to the id
      */
@@ -56,9 +56,9 @@ public class Compteur {
     private Quartier quartier;
 
     /**
-     * Constructor of the class Compteur with the quartier object
+     * Constructor of the class Compteur with quartier object
      * libelle + sens = "libelle vers sens"
-     * can launch an IllegalArgumentException in setters if the parameters are not valid
+     * can launch an IllegalArgumentException in setters if the parameters arn't valid
      * 
      * @param id        an integer representing the (unique) id of the compteur (positive)
      * @param libelle   a String representing the libelle of the compteur (not null or empty)
@@ -90,7 +90,7 @@ public class Compteur {
     /**
      * Constructor of the class Compteur without quartier
      * libelle + sens = "libelle vers sens"
-     * can launch an IllegalArgumentException in setters if the parameters are not valid
+     * can launch an IllegalArgumentException in setters if the parameters arn't valid
      * 
      * @param id        an integer representing the id of the compteur (positive)
      * @param libelle   a String representing the libelle of the compteur (not null or empty)
@@ -148,6 +148,7 @@ public class Compteur {
 
     /**
      * Setter for the quartier of the compteur
+     * Update the compteur list of the old and new quartier
      * 
      * @param quartier a Quartier object representing the quartier of the compteur
      */
@@ -164,6 +165,7 @@ public class Compteur {
 
     /**
      * Setter for the quartier of the compteur
+     * Update the compteur list of the old and new quartier
      * 
      * @param idQuartier an integer representing the id of the quartier of the compteur (positive)
      */
@@ -241,7 +243,7 @@ public class Compteur {
      * Get the position of the compteur
      * format : [latitude, longitude]
      * 
-     * @return the position of the compteur
+     * @return a double tab of size 2 containing the latitude and the longitude of the compteur
      */
     public double[] getPosition() {
         double[] ret = {this.latitude, this.longitude};

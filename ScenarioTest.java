@@ -113,6 +113,17 @@ public class ScenarioTest {
         System.out.println("Nombre de passage moyen de la semaine sur le quartier " + q2.getNom() + " : "
                 + (nbPassageTotal / nbReleves));
 
+        // Afficher la température moyenne de la semaine
+        double tempMoy = 0;
+        tempMoy += j1.getTemperatureMoyenne();
+        tempMoy += j2.getTemperatureMoyenne();
+        tempMoy += j3.getTemperatureMoyenne();
+        tempMoy += j4.getTemperatureMoyenne();
+        tempMoy += j5.getTemperatureMoyenne();
+        tempMoy += j6.getTemperatureMoyenne();
+        tempMoy += j7.getTemperatureMoyenne();
+        System.out.println("Température moyenne de la semaine : " + (tempMoy / 7));
+
     }
 
 }

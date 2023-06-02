@@ -14,16 +14,19 @@ public class Jour {
     
     /**
      * HashMap containing all Jour objects
+     * In key it's the date of the jour
+     * In value it's the jour object
+     * This HashMap allow to get a jour by his date and verify uniqueness of date
      */
     private static HashMap<String, Jour> jourList = new HashMap<String, Jour>();
 
-    private static final String[] valideJours = { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" };
-    private static final String[] valideVacances = { "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps" };
+    private static final String[] VALIDE_JOUR = { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" };
+    private static final String[] VALIDE_VACANCES = { "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps" };
 
     // ----------------------------- static methods -----------------------------
 
     /**
-     * Get a jour by his date
+     * Get a jour by its date
      * 
      * @param date the date of the jour to get (format : YYYY-MM-DD)
      * @return the jour object corresponding to the date
@@ -33,7 +36,7 @@ public class Jour {
     }
 
     /**
-     * Delete a jour by his date
+     * Delete a jour by its date
      * 
      * @param date the date of the jour to delete (format : YYYY-MM-DD)
      */
@@ -43,7 +46,7 @@ public class Jour {
     }
 
     /**
-     * Check if a date is valid
+     * Check if a date is valid : YYYY-MM-DD
      * 
      * @param date the date to check (format : YYYY-MM-DD)
      * @return true if the date is valid, false otherwise
@@ -75,10 +78,12 @@ public class Jour {
      */
     private static boolean containString(String aChercher, String[] liste) {
         boolean ret = false;
-        for (String s : liste) {
-            if (s.equals(aChercher)) {
+        int i = 0;
+        while (!ret && i < liste.length) {
+            if (aChercher.equals(liste[i])) {
                 ret = true;
             }
+            i++;
         }
         return ret;
     }
@@ -96,8 +101,8 @@ public class Jour {
      * Constructor of Jour
      * 
      * @param date the date of the jour to create (format : YYYY-MM-DD)
-     * @param temperatureMoyenne the average temperature
-     * @param jour the day of the week
+     * @param temperatureMoyenne the average temperature (must be between -40 and 60)
+     * @param jour the day of the week ("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
      * @param vacances the holidays (null if there is no holidays)
      */
     public Jour(String date, String jour, String vacances, double temperatureMoyenne) {
@@ -120,10 +125,39 @@ public class Jour {
         Jour.jourList.put(date, this);
     }
     
+    /**
+     * Constructor of Jour
+     * 
+     * @param date the date of the jour to create (format : YYYY-MM-DD)
+     * @param temperatureMoyenne the average temperature (must be between -40 and 60)
+     * @param jour the day of the week (0-6)
+     * @param vacances the holidays (null if there is no holidays)
+     */
+    public Jour(String date, int jour, String vacances, double temperatureMoyenne) {
+        if (!Jour.dateValide(date)) {
+            throw new IllegalArgumentException("models.Jour.constructor : Le parametre date n'est pas valide");
+        }
+        if (Jour.jourList.containsKey(date)) {
+            throw new IllegalArgumentException("models.Jour.constructor : Cette date est déjà créée");
+        }
+
+        this.date = date;
+        try {
+            this.setJour(jour);
+            this.setVacances(vacances);
+            this.setTemperatureMoyenne(temperatureMoyenne);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("models.Jour.constructor : " + e.getMessage());
+        }
+
+        Jour.jourList.put(date, this);
+    }
+
     // ----------------------------- setters -----------------------------
 
     /**
      * Set the day of the week with a string
+     * valid string : "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"
      * 
      * @param jour the day of the week
      */
@@ -133,26 +167,27 @@ public class Jour {
                     "models.Jour.setJour : Le parametre jour n'est pas valide (null ou vide)");
         }
 
-        if (!Jour.containString(jour, Jour.valideJours)) {
+        if (!Jour.containString(jour, Jour.VALIDE_JOUR)) {
             throw new IllegalArgumentException("models.Jour.setJour : Ce jour n'existe pas ou est mal orthographié");
         }
         this.jour = jour;
     }
     
     /**
-     * Set the day of the week with an int
+     * Set the day of the week with an int (0-6)
      * 
-     * @param jour the day of the week
+     * @param jour the day of the week (0-6)
      */
     public void setJour(int jour) {
         if (jour < 0 || jour > 6) {
             throw new IllegalArgumentException("models.Jour.setJour : Le parametre jour n'est pas valide (0-6))");
         }
-        this.jour = Jour.valideJours[jour];
+        this.jour = Jour.VALIDE_JOUR[jour];
     }
 
     /**
      * Set the holidays
+     * valid string : "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps"
      * 
      * @param vacances the holidays, null if there is no holidays
      */
@@ -160,7 +195,7 @@ public class Jour {
         if (vacances == null || vacances.isEmpty()) {
             this.vacances = null;
         } else {
-            if (!Jour.containString(vacances, Jour.valideVacances)) {
+            if (!Jour.containString(vacances, Jour.VALIDE_VACANCES)) {
                 throw new IllegalArgumentException("models.Jour.setVacances : Ces vacances n'existent pas ou sont mal orthographiées");
             }
             this.vacances = vacances;
@@ -223,9 +258,9 @@ public class Jour {
     // ----------------------------- methods -----------------------------
 
     /**
-     * Get the day of the week
+     * Check if the day is a weekend
      * 
-     * @return the day of the week
+     * @return true if the day is a weekend, false otherwise
      */
     public boolean estWeekEnd(){
         boolean ret = false;
@@ -247,4 +282,5 @@ public class Jour {
         }
         return ret;
     }
+
 }
