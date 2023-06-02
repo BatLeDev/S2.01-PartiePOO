@@ -33,7 +33,7 @@ public class Compteur {
     }
 
     /**
-     * Delete a compteur by his id
+     * Delete a compteur by his id, and remove it from the list of compteur of the quartier if it belong to one
      * 
      * @return the compteur object corresponding to the id
      */

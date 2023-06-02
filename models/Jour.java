@@ -17,8 +17,8 @@ public class Jour {
      */
     private static HashMap<String, Jour> jourList = new HashMap<String, Jour>();
 
-    private static String[] valideJours = { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" };
-    private static String[] valideVacances = { "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps" };
+    private static final String[] VALIDEJOUR = { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" };
+    private static final String[] VALIDEVACANCES = { "Noel", "Ascension", "Hiver", "Ete", "Toussaint", "Printemps" };
 
     // ----------------------------- static methods -----------------------------
 
@@ -100,7 +100,7 @@ public class Jour {
      * @param jour the day of the week
      * @param vacances the holidays (null if there is no holidays)
      */
-    public Jour(String date, double temperatureMoyenne, String jour, String vacances) {
+    public Jour(String date, String jour, String vacances, double temperatureMoyenne) {
         if (!Jour.dateValide(date)) {
             throw new IllegalArgumentException("models.Jour.constructor : Le parametre date n'est pas valide");
         }
@@ -133,7 +133,7 @@ public class Jour {
                     "models.Jour.setJour : Le parametre jour n'est pas valide (null ou vide)");
         }
 
-        if (!Jour.containString(jour, Jour.valideJours)) {
+        if (!Jour.containString(jour, Jour.VALIDEJOUR)) {
             throw new IllegalArgumentException("models.Jour.setJour : Ce jour n'existe pas ou est mal orthographié");
         }
         this.jour = jour;
@@ -148,7 +148,7 @@ public class Jour {
         if (jour < 0 || jour > 6) {
             throw new IllegalArgumentException("models.Jour.setJour : Le parametre jour n'est pas valide (0-6))");
         }
-        this.jour = Jour.valideJours[jour];
+        this.jour = Jour.VALIDEJOUR[jour];
     }
 
     /**
@@ -160,7 +160,7 @@ public class Jour {
         if (vacances == null || vacances.isEmpty()) {
             this.vacances = null;
         } else {
-            if (!Jour.containString(vacances, Jour.valideVacances)) {
+            if (!Jour.containString(vacances, Jour.VALIDEVACANCES)) {
                 throw new IllegalArgumentException("models.Jour.setVacances : Ces vacances n'existent pas ou sont mal orthographiées");
             }
             this.vacances = vacances;
@@ -240,9 +240,9 @@ public class Jour {
      * 
      * @return true if the day is a holiday, false otherwise
      */
-    public boolean estVacances(){
+    public boolean estVacances() {
         boolean ret = false;
-        if (this.vacances != null){
+        if (this.vacances != null) {
             ret = true;
         }
         return ret;
