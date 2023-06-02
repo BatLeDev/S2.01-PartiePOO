@@ -98,7 +98,12 @@ public class ReleveJournalier {
      * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Jour
      */
     public static ArrayList<ReleveJournalier> getRelevesByJour(String date){
-        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveJourList.get(date));
+        ArrayList<ReleveJournalier> tmp = ReleveJourList.get(date);
+        ArrayList<ReleveJournalier> ret = null;
+
+        if (tmp != null) {
+            ret = new ArrayList<ReleveJournalier>(tmp);
+        }
         return ret;
     }
 
@@ -107,8 +112,13 @@ public class ReleveJournalier {
      * @param idCompteur the id of the Compteur
      * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Compteur
      */
-    public static ArrayList<ReleveJournalier> getReleveByCompteur(int idCompteur){
-        ArrayList<ReleveJournalier> ret = new ArrayList<ReleveJournalier> (ReleveComptList.get(idCompteur));
+    public static ArrayList<ReleveJournalier> getReleveByCompteur(int idCompteur) {
+        ArrayList<ReleveJournalier> tmp = ReleveComptList.get(idCompteur);
+        ArrayList<ReleveJournalier> ret = null;
+
+        if (tmp != null) {
+            ret =  new ArrayList<ReleveJournalier>(tmp);
+        }
         return ret;
     }
 
@@ -139,8 +149,10 @@ public class ReleveJournalier {
      */
     public static ArrayList<ReleveJournalier> removeAllRelevesOfAJour(String date) {
         ArrayList<ReleveJournalier> releves = getRelevesByJour(date);
-        for (ReleveJournalier releve : releves) {
-            removeReleveJournalier(date, releve.getLeCompteur());
+        if (releves != null) {
+            for (ReleveJournalier releve : releves) {
+                removeReleveJournalier(date, releve.getLeCompteur());
+            }
         }
         return releves;
     }
@@ -154,8 +166,10 @@ public class ReleveJournalier {
      */
     public static ArrayList<ReleveJournalier> removeAllRelevesOfACompteur(int idCompteur) {
         ArrayList<ReleveJournalier> releves = getReleveByCompteur(idCompteur);
-        for (ReleveJournalier releve : releves) {
-            removeReleveJournalier(releve.getLeJour(), idCompteur);
+        if (releves != null) {
+            for (ReleveJournalier releve : releves) {
+                removeReleveJournalier(releve.getLeJour(), idCompteur);
+            }
         }
         return releves;
     }

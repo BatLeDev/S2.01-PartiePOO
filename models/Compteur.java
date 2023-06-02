@@ -42,7 +42,7 @@ public class Compteur {
         if (c != null && c.getQuartier() != null) {
             c.getQuartier().removeCompteur(id);
         }
-        ReleveJournalier.removeReleveJournalierPourCompteur(id);
+        ReleveJournalier.removeAllRelevesOfACompteur(id);
         return c;
     }
 

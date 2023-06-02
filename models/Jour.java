@@ -39,7 +39,7 @@ public class Jour {
      */
     public static void deleteJour (String date) {
         Jour.jourList.remove(date);
-        ReleveJournalier.removeReleveJournalierPourJour(date);
+        ReleveJournalier.removeAllRelevesOfAJour(date);
     }
 
     /**
