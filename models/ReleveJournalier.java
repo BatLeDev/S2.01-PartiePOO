@@ -11,12 +11,12 @@ public class ReleveJournalier {
 
     // These two HashMap are used to preserve the unicity of a ReleveJournalier
     /**
-     * The list of all the ReleveJournalier associated to a Compteur
+     * The list of all the ReleveJournalier associated to a Compteur, if an id of Compteur is not in this HashMap, it means that there aren't any ReleveJournalier associated to this Compteur
      */
     private static HashMap<Integer, ArrayList<ReleveJournalier>> releveComptList = new HashMap<Integer, ArrayList<ReleveJournalier>>();
     
     /**
-     * The list of all the ReleveJournalier associated to a Jour
+     * The list of all the ReleveJournalier associated to a Jour, if a date of Jour is not in this HashMap, it means that there aren't any ReleveJournalier associated to this Jour
      */
     private static HashMap<String, ArrayList<ReleveJournalier>> releveJourList = new HashMap<String, ArrayList<ReleveJournalier>>();
     
@@ -96,7 +96,7 @@ public class ReleveJournalier {
     public static ReleveJournalier getReleveJournalier(String date, int idCompteur) {
         ReleveJournalier ret = null;
         ArrayList<ReleveJournalier> listJour = getRelevesByJour(date);
-        ArrayList<ReleveJournalier> listCompt = getReleveByCompteur(idCompteur);
+        ArrayList<ReleveJournalier> listCompt = getRelevesByCompteur(idCompteur);
 
         if (listJour != null && listCompt != null) {
             Iterator<ReleveJournalier> itJour = listJour.iterator();
@@ -138,7 +138,7 @@ public class ReleveJournalier {
      * @param idCompteur the id of the Compteur
      * @return an ArrayList of ReleveJournalier, null if there aren't any ReleveJournalier for this Compteur
      */
-    public static ArrayList<ReleveJournalier> getReleveByCompteur(int idCompteur) {
+    public static ArrayList<ReleveJournalier> getRelevesByCompteur(int idCompteur) {
         ArrayList<ReleveJournalier> tmp = releveComptList.get(idCompteur);
         ArrayList<ReleveJournalier> ret = null;
 
@@ -191,7 +191,7 @@ public class ReleveJournalier {
      * @return an ArrayList of the ReleveJournalier removed, null if there aren't any ReleveJournalier for this Compteur
      */
     public static ArrayList<ReleveJournalier> removeAllRelevesOfACompteur(int idCompteur) {
-        ArrayList<ReleveJournalier> releves = getReleveByCompteur(idCompteur);
+        ArrayList<ReleveJournalier> releves = getRelevesByCompteur(idCompteur);
         if (releves != null) {
             for (ReleveJournalier releve : releves) {
                 removeReleveJournalier(releve.getLeJour(), idCompteur);

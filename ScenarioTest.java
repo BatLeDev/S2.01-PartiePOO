@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import models.*;
 
@@ -99,19 +100,9 @@ public class ScenarioTest {
         // Afficher le quartier du c3
         System.out.println("Quartier du compteur " + c3.getId() + " : " + c3.getQuartier());
 
-        // Afficher le nombre de passage moyen de la semaine sur le quartier 4
-        ArrayList<Integer> q2List = q2.getCompteursList();
-        int nbPassageTotal = 0;
-        int nbReleves = 0;
-        for (int cId : q2List) {
-            ArrayList<ReleveJournalier> rjList = ReleveJournalier.getReleveByCompteur(cId);
-            for (ReleveJournalier rj : rjList) {
-                nbPassageTotal += rj.getNbPassageTotal();
-                nbReleves++;
-            }
-        }
-        System.out.println("Nombre de passage moyen de la semaine sur le quartier " + q2.getNom() + " : "
-                + (nbPassageTotal / nbReleves));
+        // Génération liste data graphique : Liste du nombre moyen de passage par jour sur un quartier
+        HashMap<String, Double> listPassageMoyen = listPassageMoyenQuartier(q2);
+        System.out.println("Liste des passages moyens par jour du quartier " + q2.getNom() + " : " + listPassageMoyen);
 
         // Afficher la température moyenne de la semaine
         double tempMoy = 0;
@@ -126,8 +117,39 @@ public class ScenarioTest {
 
     }
 
+    /**
+     * Retourne la liste du nombre moyen de passage par jour sur un quartier
+     * 
+     * @param q le quartier concerné
+     * @return HashMap<String, Double> : string = date, double = moyenne
+     */
+    public static HashMap<String, Double> listPassageMoyenQuartier(Quartier q) {
+        ArrayList<Integer> qList = q.getCompteursList(); // Récupère la liste des compteurs du quartier
+        HashMap<String, Double> listPassageMoyenParJour = new HashMap<>();
+        HashMap<String, Integer> nombreJoursParDate = new HashMap<>(); // Pour le calcul de la moyenne
+
+        // Fait la somme des passages journaliers pour chaque jour
+        for (int cId : qList) {
+            ArrayList<ReleveJournalier> listRJ = ReleveJournalier.getRelevesByCompteur(cId);
+            for (ReleveJournalier rj : listRJ) { // Pour chaque jour de chaque compteur
+                String date = rj.getLeJour();
+                int passages = rj.getNbPassageTotal();
+
+                // Si la date n'est pas encore dans la liste, on l'ajoute
+                listPassageMoyenParJour.merge(date, (double) passages, Double::sum);
+                nombreJoursParDate.merge(date, 1, Integer::sum);
+            }
+        }
+
+        // Calcule la moyenne
+        for (String date : listPassageMoyenParJour.keySet()) {
+            int passages = listPassageMoyenParJour.get(date).intValue();
+            int nombreJours = nombreJoursParDate.get(date);
+            double moyenne = (double) passages / nombreJours;
+            listPassageMoyenParJour.put(date, moyenne);
+        }
+
+        return listPassageMoyenParJour;
+    }
+
 }
-
-
-
-// 
