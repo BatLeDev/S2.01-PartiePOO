@@ -365,8 +365,8 @@ public class ReleveJournalier {
         double ret = 0;
         int nbPassage = 0;
         for (int i = 0; i < relevesHeures.length; i++) {
-            ret += relevesHeures[i] * i;
-            nbPassage += relevesHeures[i];
+            ret += relevesHeures[i];
+            nbPassage += 1;
         }
         if (nbPassage != 0) {
             ret = ret / nbPassage;
