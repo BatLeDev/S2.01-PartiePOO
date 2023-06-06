@@ -194,7 +194,7 @@ public class ReleveJournalier {
         ArrayList<ReleveJournalier> releves = getRelevesByCompteur(idCompteur);
         if (releves != null) {
             for (ReleveJournalier releve : releves) {
-                removeReleveJournalier(releve.getLeJour(), idCompteur);
+                ReleveJournalier.removeReleveJournalier(releve.getLeJour(), idCompteur);
             }
         }
         return releves;
