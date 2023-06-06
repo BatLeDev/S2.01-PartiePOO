@@ -4,6 +4,9 @@ import models.ReleveJournalier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+
+/////////////////// This class test all methods in a random order ///////////////////
 
 public class TestReleveJournalier {
     private static final String COLOR_RESET = "\u001B[0m";
@@ -19,25 +22,41 @@ public class TestReleveJournalier {
         new Compteur(3, "Bonduelle", "est", 49.000, 51.000);
         new Compteur(4, "Bonduelle", "ouest", 49.000, 51.000);
 
-        testConstructeur();
-        testSetPresenceAnomalie();
-        testSetRelevesHeures();
-        testGetReleveJournalier();
-        testGetRelevesByJour();
-        testGetRelevesByCompteur();
-        testRemoveReleveJournalier();
-        testRemoveAllRelevesOfAJour();
-        testRemoveAllRelevesOfACompteur();
-        testGetPassageHoraire();
-        testGetNbPassageTotal();
-        testGetMoyennePassageByHour();
-        
+        // Créer une liste des noms des méthodes de test
+        ArrayList<String> testMethods = new ArrayList<>();
+        testMethods.add("testConstructeur");
+        testMethods.add("testSetPresenceAnomalie");
+        testMethods.add("testSetRelevesHeures");
+        testMethods.add("testGetReleveJournalier");
+        testMethods.add("testGetRelevesByJour");
+        testMethods.add("testGetRelevesByCompteur");
+        testMethods.add("testRemoveReleveJournalier");
+        testMethods.add("testRemoveAllRelevesOfAJour");
+        testMethods.add("testRemoveAllRelevesOfACompteur");
+        testMethods.add("testGetPassageHoraire");
+        testMethods.add("testGetNbPassageTotal");
+        testMethods.add("testGetMoyennePassageByHour");
+
+        // Mélanger l'ordre des méthodes
+        Collections.shuffle(testMethods);
+
+        // Exécuter les méthodes de test dans l'ordre aléatoire
+        for (String methodName : testMethods) {
+            try {
+                Class<?> testClass = TestReleveJournalier.class;
+                testClass.getMethod(methodName).invoke(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Afficher le résultat des tests
         System.out.println();
         if (nbError == 0) {
             printOk("Test réussi ! : " + nbTest + " / " + nbTest);
         } else {
             printError("Echec du test : " + (nbTest - nbError) + " / " + nbTest);
-        }    
+        }
     }
 
     public static void testConstructeur() {
@@ -133,7 +152,7 @@ public class TestReleveJournalier {
         }
     }
 
-    private static void testGetReleveJournalier() {
+    public static void testGetReleveJournalier() {
         System.out.println("-- Test de getReleveJournalier --");
 
         new Jour("2023-09-01", "Lundi", null, 20.0);
@@ -148,7 +167,7 @@ public class TestReleveJournalier {
         }
     }
     
-    private static void testGetRelevesByJour() {
+    public static void testGetRelevesByJour() {
         System.out.println("-- Test de getRelevesByJour --");
 
         // Création de quelques jours
@@ -181,7 +200,7 @@ public class TestReleveJournalier {
         }
     }
     
-    private static void testGetRelevesByCompteur() {
+    public static void testGetRelevesByCompteur() {
         System.out.println("-- Test de getRelevesByCompteur --");
 
         // Création de quelques jours
@@ -212,7 +231,7 @@ public class TestReleveJournalier {
         }
     }
     
-    private static void testRemoveReleveJournalier() {
+    public static void testRemoveReleveJournalier() {
         System.out.println("-- Test de removeReleveJournalier --");
 
         new Jour("2023-12-01", "Lundi", null, 20.0);
@@ -240,7 +259,7 @@ public class TestReleveJournalier {
         }
     }
     
-    private static void testRemoveAllRelevesOfAJour() {
+    public static void testRemoveAllRelevesOfAJour() {
         System.out.println("-- Test de removeAllRelevesOfAJour --");
 
         // Création de quelques jours
@@ -267,7 +286,7 @@ public class TestReleveJournalier {
         }
     }
 
-    private static void testRemoveAllRelevesOfACompteur() {
+    public static void testRemoveAllRelevesOfACompteur() {
         System.out.println("-- Test de removeAllRelevesOfACompteur --");
 
         // Création de quelques jours
@@ -298,7 +317,7 @@ public class TestReleveJournalier {
         }
     }
 
-    private static void testGetPassageHoraire() {
+    public static void testGetPassageHoraire() {
         System.out.println("-- Test de getPassageHoraire --");
 
         // Création d'un jour
@@ -327,7 +346,7 @@ public class TestReleveJournalier {
 
     }
 
-    private static void testGetNbPassageTotal() {
+    public static void testGetNbPassageTotal() {
         System.out.println("-- Test de getNbPassageTotal --");
 
         // Création de quelques relevés journaliers
@@ -346,7 +365,7 @@ public class TestReleveJournalier {
         }
     }
     
-    private static void testGetMoyennePassageByHour() {
+    public static void testGetMoyennePassageByHour() {
         System.out.println("-- Test de getMoyennePassageByHour --");
 
         // Création d'un relevé journalier
@@ -375,7 +394,6 @@ public class TestReleveJournalier {
         }
     }
     
-
     private static void printOk(String message) {
         System.out.println(COLOR_OK + message + COLOR_RESET);
         nbTest++;
