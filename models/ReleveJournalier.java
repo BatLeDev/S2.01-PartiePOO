@@ -212,7 +212,7 @@ public class ReleveJournalier {
      * 
      * @param leCompteur the id of the compteur (positive)
      * @param leJour the day of the releve (not null or empty)
-     * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all values >= 0)
+     * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all positives values )
      * @param presenceAnomalie the presenceAnomalie of the releve (null or in the list of TYPE_ANOMALIE)
      */
     public ReleveJournalier(int leCompteur , String leJour , int[] relevesHeures , String presenceAnomalie){
@@ -246,8 +246,7 @@ public class ReleveJournalier {
      * Set the relevesHeures of the releve
      * can launch an IllegalArgumentException if the parameters are not valid
      * 
-     * @param relevesHeures the relevesHeures of the releve (not null, length = 24,
-     *                      all values >= 0)
+     * @param relevesHeures the relevesHeures of the releve (not null, length = 24, all positives values )
      */
     public void setRelevesHeures(int[] relevesHeures) {
         if (!ReleveJournalier.relevesHeuresValide(relevesHeures)) {

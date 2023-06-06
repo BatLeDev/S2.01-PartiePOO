@@ -3,21 +3,24 @@ package models;
 import java.util.HashMap;
 
 /**
- * Class compteur
- * This class is used to represent a compteur, with its id, its libelle, its sens, its latitude and its longitude
+ * This class is used to represent a compteur, with its id, its libelle, its
+ * sens, its latitude and its longitude.
  * 
- * This class save all the compteur in a HashMap, with the id as key and the compteur object as value
- * If a compteur belong to a quartier, the compteur is added to the list of compteur of the quartier
+ * <p>
+ * This class save all the compteur in a {@code HashMap}, with the id as key and
+ * the {@link Compteur} as value.
+ * If a Compteur belong to a {@link Quartier}, the compteur is added to the list
+ * of compteur of the quartier
  */
 public class Compteur {
 
     // ----------------------------- static attributes -----------------------------
 
     /**
-     * HashMap containing all compteurs objects
-     * In key it's the id of the compteur
-     * In value it's the compteur object
-     * This HashMap allow to get a compteur by his id and verify uniqueness of id
+     * HashMap containing all compteurs objects.
+     * 
+     * <p>In key it's the id of the compteur, in value it's the compteur object.
+     * This {@code Hashmap} allow to get a compteur by his id and verify uniqueness of id
      */
     private static HashMap<Integer,Compteur> compteurList = new HashMap<Integer,Compteur>();
 
@@ -26,7 +29,8 @@ public class Compteur {
     /**
      * Get a compteur by its id
      * 
-     * @return the compteur object corresponding to the id
+     * @param id an integer representing the id of the compteur ({@code positive})
+     * @return the {@link Compteur} corresponding to the id
      */
     public static Compteur getCompteur(int id) {
         return Compteur.compteurList.get(id);
@@ -35,7 +39,8 @@ public class Compteur {
     /**
      * Delete a compteur by its id
      * 
-     * @return the compteur object corresponding to the id
+     * @param id an integer representing the id of the compteur ({@code positive})
+     * @return the {@link Compteur} corresponding to the id
      */
     public static Compteur deleteCompteur(int id) {
         Compteur c = Compteur.compteurList.remove(id);
@@ -59,16 +64,18 @@ public class Compteur {
     private Quartier quartier;
 
     /**
-     * Constructor of the class Compteur with quartier object
-     * libelle + sens = "libelle vers sens"
-     * can launch an IllegalArgumentException in setters if the parameters arn't valid
+     * Constructor of the class Compteur with {@link Quartier}
      * 
-     * @param id        an integer representing the (unique) id of the compteur (positive)
-     * @param libelle   a String representing the libelle of the compteur (not null or empty)
-     * @param sens      a String representing the sens of the compteur (not null or empty)
-     * @param latitude  a double representing the latitude of the compteur
-     * @param longitude a double representing the longitude of the compteur
-     * @param quartier  a Quartier object representing the quartier of the compteur
+     * <p>{@code libelle + sens = "libelle vers sens"}
+     * 
+     * @param id        an {@code integer} representing the id of the compteur ({@code positive})
+     * @param libelle   a {@code String} representing the libelle of the compteur ({@code not null or empty})
+     * @param sens      a {@code String} representing the sens of the compteur ({@code not null or empty})
+     * @param latitude  a {@code double} representing the latitude of the compteur
+     * @param longitude a {@code double} representing the longitude of the compteur
+     * @param quartier  a {@link Quartier} representing the quartier of the compteur ({@code can be null})
+     * 
+     * @throws IllegalArgumentException if parameters are invalid
      */
     public Compteur(int id, String libelle, String sens, double latitude, double longitude, Quartier quartier) {
         if (id < 0 || compteurList.containsKey(id)) {
@@ -92,25 +99,29 @@ public class Compteur {
 
     /**
      * Constructor of the class Compteur without quartier
-     * libelle + sens = "libelle vers sens"
-     * can launch an IllegalArgumentException in setters if the parameters arn't valid
      * 
-     * @param id        an integer representing the id of the compteur (positive)
-     * @param libelle   a String representing the libelle of the compteur (not null or empty)
-     * @param sens      a String representing the sens of the compteur (not null or empty)
-     * @param latitude  a double representing the latitude of the compteur
-     * @param longitude a double representing the longitude of the compteur
+     * <p>{@code libelle + sens = "libelle vers sens"}
+     * 
+     * @param id        an {@code integer} representing the id of the compteur ({@code positive})
+     * @param libelle   a {@code String} representing the libelle of the compteur ({@code not null or empty})
+     * @param sens      a {@code String} representing the sens of the compteur ({@code not null or empty})
+     * @param latitude  a {@code double} representing the latitude of the compteur
+     * @param longitude a {@code double} representing the longitude of the compteur
+     * 
+     * @throws IllegalArgumentException if parameters are invalid
      */
     public Compteur(int id, String libelle, String sens, double latitude, double longitude) {
         this(id, libelle, sens, latitude, longitude, null);
     }
-
+    
     // ----------------------------- setters -----------------------------
-
+    
     /**
      * Setter for the libelle of the compteur
      * 
-     * @param libelle a String representing the libelle of the compteur (not null or empty)
+     * @param libelle a {@code String} representing the libelle of the compteur ({@code not null or empty})
+     * 
+     * @throws IllegalArgumentException if parameters {@code libelle} is {@code null} or empty
      */
     public void setLibelle(String libelle) {
         if (libelle == null || libelle.isEmpty()) {
@@ -122,7 +133,9 @@ public class Compteur {
     /**
      * Setter for the sens of the compteur
      * 
-     * @param sens a String representing the sens of the compteur (not null or empty)
+     * @param sens a {@code String} representing the sens of the compteur ({@code not null or empty})
+     * 
+     * @throws IllegalArgumentException if parameters {@code sens} is {@code null} or empty
      */
     public void setSens(String sens) {
         if (sens == null || sens.isEmpty()) {
@@ -134,7 +147,7 @@ public class Compteur {
     /**
      * Setter for the latitude of the compteur
      * 
-     * @param latitude a double representing the latitude of the compteur
+     * @param latitude a {@code double} representing the latitude of the compteur
      */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
@@ -143,7 +156,7 @@ public class Compteur {
     /**
      * Setter for the longitude of the compteur
      * 
-     * @param longitude a double representing the longitude of the compteur
+     * @param longitude a {@code double} representing the longitude of the compteur
      */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
@@ -151,9 +164,10 @@ public class Compteur {
 
     /**
      * Setter for the quartier of the compteur
-     * Update the compteur list of the old and new quartier
      * 
-     * @param quartier a Quartier object representing the quartier of the compteur
+     * <p>Update the compteurList of the old and new {@link Quartier}.
+     * 
+     * @param quartier a {@link Quartier} representing the quartier of the compteur ({@code can be null})
      */
     public void setQuartier(Quartier quartier) {
         // remove the compteur from the old quartier
@@ -167,10 +181,12 @@ public class Compteur {
     }
 
     /**
-     * Setter for the quartier of the compteur
-     * Update the compteur list of the old and new quartier
+     * Setter for the quartier of the compteur, with the id of the {@link Quartier}
+     * <p>Update the compteur list of the old and new {@link Quartier}.
      * 
-     * @param idQuartier an integer representing the id of the quartier of the compteur (positive)
+     * @param idQuartier an {@code integer} representing the id of the quartier of the compteur ({@code positive})
+     * 
+     * @throws IllegalArgumentException if {@code idQuartier} is {@code negative} or doesn't correspond to any {@link Quartier}
      */
     public void setQuartier(int idQuartier) {
         if (idQuartier < 0) {
@@ -189,74 +205,74 @@ public class Compteur {
     // ----------------------------- getters -----------------------------
 
     /**
-     * Get the id of the compteur
+     * Get the {@code id} of the compteur
      * 
-     * @return the id of the compteur
+     * @return an {@code integer} representing the {@code id} of the compteur ({@code positive})
      */
     public int getId() {
         return this.idCompteur;
     }
 
     /**
-     * Get the libelle of the compteur
+     * Get the {@code libelle} of the compteur
      * 
-     * @return the libelle of the compteur
+     * @return a {@code String} representing the {@code libelle} of the compteur
      */
     public String getLibelle() {
         return this.libelle;
     }
 
     /**
-     * Get the sens of the compteur
+     * Get the {@code sens} of the compteur
      * 
-     * @return the sens of the compteur
+     * @return a {@code String} representing the {@code sens} of the compteur
      */
     public String getSens() {
         return this.sens;
     }
 
     /**
-     * Get the latitude of the compteur
+     * Get the {@code latitude} of the compteur
      * 
-     * @return the latitude of the compteur
+     * @return a {@code double} representing the {@code latitude} of the compteur
      */
     public double getLatitude() {
         return this.latitude;
     }
 
     /**
-     * Get the longitude of the compteur
+     * Get the {@code longitude} of the compteur
      * 
-     * @return the longitude of the compteur
+     * @return a {@code double} representing the {@code longitude} of the compteur
      */
     public double getLongitude() {
         return this.longitude;
     }
 
     /**
-     * Get the quartier of the compteur
-     * 
-     * @return the quartier of the compteur
+     * Get the {@link Quartier} of the compteur
+     *
+     * @return a {@link Quartier} representing the {@link Quartier} of the compteur, {@code null} if the compteur doesn't belong to any quartier
      */
     public Quartier getQuartier() {
         return this.quartier;
     }
 
     /**
-     * Get the position of the compteur
-     * format : [latitude, longitude]
+     * Get the position of the compteur.
      * 
-     * @return a double tab of size 2 containing the latitude and the longitude of the compteur
+     * @return a {@code double[]} of size 2 representing the position of the compteur.
+     *         The format of the returned array is: {{@code latitude}, {@code longitude}}
      */
     public double[] getPosition() {
         double[] ret = {this.latitude, this.longitude};
         return ret;
     }
-
+    
     // ----------------------------- prints -----------------------------
-
+    
     /**
-     * Get a String representing the compteur
+     * To show the compteur in a readable way
      * 
      * @return "libelle vers sens#idCompteur : quartier = idQuartier, latitude = latitude, longitude = getLongitude"
      */
@@ -272,7 +288,7 @@ public class Compteur {
     }
     
     /**
-     * Get a String representing the compteur
+     * Convert the compteur to a CSV line. You can use this method to save the compteur in a CSV file.
      * 
      * @return "idCompteur;libelle;sens;latitude;longitude;idQuartier"
      */
