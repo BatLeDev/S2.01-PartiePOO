@@ -63,8 +63,6 @@ public class ScenarioTest {
         ReleveJournalier rj14 = new ReleveJournalier(747, "2020-01-07", rjH14, null);
 
         // --------- Cas d'usage ---------
-
-        // ----------------------------- Début diagramme de séquence -----------------------------
         // On change un compteur de quartier
         System.out.println("Quartier du compteur " + c4.getId() + "(avant changement) : " + c4.getQuartier().getNom());
         c4.setQuartier(q2);
@@ -98,8 +96,6 @@ public class ScenarioTest {
         } else {
             System.out.println("Jour " + j5.getDate() + " : Travaille !");
         }
-
-        // ----------------------------- Fin diagramme de séquence -----------------------------
 
         // Afficher le quartier du c3
         System.out.println("Quartier du compteur " + c3.getId() + " : " + c3.getQuartier());
