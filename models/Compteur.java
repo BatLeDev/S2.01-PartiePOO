@@ -39,8 +39,11 @@ public class Compteur {
      */
     public static Compteur deleteCompteur(int id) {
         Compteur c = Compteur.compteurList.remove(id);
-        if (c != null && c.getQuartier() != null) {
-            c.getQuartier().removeCompteur(id);
+        if (c != null) {
+            Quartier quartier = c.getQuartier();
+            if (quartier != null) {
+                quartier.removeCompteur(id);
+            }
         }
         ReleveJournalier.removeAllRelevesOfACompteur(id);
         return c;
